@@ -1,0 +1,43 @@
+*       *********************************************************
+*       *                                                         
+*       * 27/04/2015            EDICION.MPR             11:57:31  
+*       *                                                         
+*       *********************************************************
+*       *                                                         
+*       * Nombre del autor                                        
+*       *                                                         
+*       * Copyright (C) 2015 Nombre de compañía                   
+*       * Dirección                                               
+*       * Ciudad,     Código pos                                  
+*       * País                                              
+*       *                                                         
+*       * Descripción:                                            
+*       * Este PROGRAMA lo ha generado automáticamente GENMENU.    
+*       *                                                         
+*       *********************************************************
+
+
+*       *********************************************************
+*       *                                                         
+*       *                    Definición de menú                   
+*       *                                                         
+*       *********************************************************
+*
+
+DEFINE POPUP menúemerge SHORTCUT RELATIVE FROM MROW(),MCOL()
+DEFINE BAR _med_slcta OF menúemerge PROMPT "\<Seleccionar todo" ;
+	KEY CTRL+A, "Ctrl+A" ;
+	MESSAGE "Selecciona todos los elementos o texto de la ventana actual."
+DEFINE BAR _med_clear OF menúemerge PROMPT "\<Borrar" ;
+	MESSAGE "Quita la selección pero no la coloca en el Portapapeles."
+DEFINE BAR _med_paste OF menúemerge PROMPT "Peg\<ar" ;
+	KEY CTRL+V, "Ctrl+V" ;
+	MESSAGE "Pega el contenido del Portapapeles."
+DEFINE BAR _med_copy OF menúemerge PROMPT "\<Copiar" ;
+	KEY CTRL+C, "Ctrl+C" ;
+	MESSAGE "Copia la selección al Portapapeles."
+DEFINE BAR _med_cut OF menúemerge PROMPT "Cor\<tar" ;
+	KEY CTRL+X, "Ctrl+X" ;
+	MESSAGE "Quita la selección y la coloca en el Portapapeles."
+
+ACTIVATE POPUP menúemerge

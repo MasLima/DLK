@@ -1,0 +1,33 @@
+*       *********************************************************
+*       *                                                         
+*       * 07/10/2014         MENUIMPRIMIR.MPR           01:05:30  
+*       *                                                         
+*       *********************************************************
+*       *                                                         
+*       * Nombre del autor                                        
+*       *                                                         
+*       * Copyright (C) 2014 Nombre de compañía                   
+*       * Dirección                                               
+*       * Ciudad,     Código pos                                  
+*       * País                                              
+*       *                                                         
+*       * Descripción:                                            
+*       * Este PROGRAMA lo ha generado automáticamente GENMENU.    
+*       *                                                         
+*       *********************************************************
+
+
+*       *********************************************************
+*       *                                                         
+*       *                    Definición de menú                   
+*       *                                                         
+*       *********************************************************
+*
+
+DEFINE POPUP menúemerge SHORTCUT RELATIVE FROM MROW(),MCOL()
+DEFINE BAR 1 OF menúemerge PROMPT "Formato Windows"
+DEFINE BAR 2 OF menúemerge PROMPT "Formato Texto DOS"
+ON SELECTION BAR 1 OF menúemerge _screen.activeform.RepWindows()
+ON SELECTION BAR 2 OF menúemerge _screen.activeform.RepTextoDos()
+
+ACTIVATE POPUP menúemerge

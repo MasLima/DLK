@@ -1,0 +1,62 @@
+App Name	xxxxxxxx.xxx	
+App Version	2005-02-18 04:18:48	
+Frame Bitmap		
+Frame Caption	Administrador Instalar	
+Dialog Caption Base	Administrador	
+Usage String	Uso:  Instalación	
+About Box String	Feb - 2005\n\nEsta instalación se ha creado mediante el Asistente para instalar de Visual FoxPro.	
+Check Modules	"Fox_4000001,Microsoft Visual FoxPro, graph, MS Graph, ed, MS Draw, msinfo, MS Info, MSOfficeWClass, Microsoft Office Manager, MOM Class, Office Shortcut Bar"	
+Source Directory	C:\APLIVF\AMERICAN\INSTAL~1\NETSETUP\	
+MSAPPS Mode	local	
+MSAPPS Connect	server	
+Inf File Name	SETUP.INF	
+Help File Name	ACMSETUP.HLP	
+Setup Status	"rù·Wî‚Éƒ²eä‡ä³ªµ«°¤¶2à®«v‹LG€ALÍ™¬2G4V)d;D˜‰&ö¤Uû‘ ŞOn®ÓŠÑÁİ…]kì„Y†c""ŸSóO=XÇ<G­U–]'ÛîVÛ«¢¤C8Ú(:5nB–LÓöÎfkgzE·Ïf`”¬i®‡NG}á[¹ü†ß¼/ÿƒb»§EæPÅ×8öz®”²¹Ÿ­,¸)nËíé›(å„"	
+Maximum Object ID	42	
+Admin Mode Root Object ID		
+Floppy Mode Root Object ID	2 : 1	
+Network Mode Root Object ID		
+Maintenance Mode Root Object ID	3 : 1	
+Network Maintenance Mode Root Object ID		
+Batch Mode Root Object ID	2 : 1	
+Suppress Serial Number Dialog		
+Install Date	2006.02.10.13.06.44	
+Setup Version	1.20.0.1915	
+Check Modules2		
+
+
+ObjID	Checkbox State	Title	Description	Object Type	Object Data	Bitmap Id	Vital Attribute	Shared Attribute	Configurable Directory	Destination Directory	Check Directory	Installed By	Install Data	Install Directory
+1			Search for previous versions.	AppSearch	"""C:\APLIVF\AMERICAN\APLIADMI\"", """", """", 12, ""yes"", ""yes"","					C:\APLIVF\AMERICAN\APLIADMI\		us		C:\APLIVF\AMERICAN\APLIADMI\
+2		Floppy Installation		AppMainDlg	5				yes	C:\APLIVF\AMERICAN\APLIADMI\		us		C:\APLIVF\AMERICAN\APLIADMI\
+3		Maintenance Installation		CustomDlg	7					C:\APLIVF\AMERICAN\APLIADMI\				
+5	yes		Instalar todos los archivos para Administrador	Group	7	"wizset32.dll, 111"						us		C:\APLIVF\AMERICAN\APLIADMI\
+7	yes	Administrador	Administrador se instalará.	Group	8 9 10 11 34							us		C:\APLIVF\AMERICAN\APLIADMI\
+8			*** Administrador Files	CopyFile	"""Application"", ""15528134"""		vital					us		C:\APLIVF\AMERICAN\APLIADMI\
+9			*** Administrador Files	CopySection	Application		vital					us		C:\APLIVF\AMERICAN\APLIADMI\
+10			System Files	Group	13 14							nyi		
+11				Group	17							us		C:\APLIVF\AMERICAN\APLIADMI\
+13				InstallSysFile	"""System"",""Msvcrt20Dll"""							nyi		
+14				InstallSysFile	"""System"",""Msvcrt40NT"""							nyi		
+17				Group	18 19 20 21 22 23 24 31 41 25							us		C:\APLIVF\AMERICAN\APLIADMI\
+18				InstallShared	"FoxPro Runtime,Vfp500Dll,vfp500,,8"					%M		us		C:\WINDOWS\SYSTEM\
+19				InstallShared	"FoxPro Runtime,Vfp5esnDll,vfp5esn,,8"					%M		us		C:\WINDOWS\SYSTEM\
+20				AddRegData	"""CLASSES"", ""VisualFoxProRuntime.5\shell\open\command"", """", ""%s\VFP500.DLL %%1"""					%18		us		C:\WINDOWS\SYSTEM\
+21				AddRegData	"""CLASSES"", ""VisualFoxProRuntime.5"", """", ""Microsoft Visual FoxPro 5.0 Runtime"""							us		C:\APLIVF\AMERICAN\APLIADMI\
+22				AddRegData	"""CLASSES"",""NoDualInterface\{2B32FBC2-A8F1-11CF-93EE-00AA00C08FDF}"",                """","""","""""							us		C:\APLIVF\AMERICAN\APLIADMI\
+23				AddRegData	"""CLASSES"",""NoDualInterface\{D4A97620-8E8F-11CF-93CD-00AA00C08FDF}"",                """","""","""""							us		C:\APLIVF\AMERICAN\APLIADMI\
+24				AddRegData	"""CLASSES"",""NoDualInterface\{EAB22AC3-30C1-11CF-A7EB-0000C05BAE0B}"",                """","""","""""							us		C:\APLIVF\AMERICAN\APLIADMI\
+25				AddRegData	"""CLASSES"",""VisualFoxProRuntime.5\Resources"","""",""%s\VFP5ESN.DLL"","""""					%19		us		C:\WINDOWS\SYSTEM\
+27				CustomAction	"""wizset32.dll"", ""Detect95"", ""Win95"""							nyi		
+28				Depend	27 ? 29 : 30									
+29				InstallSysFile	"""System"", ""Ctl3dsDll"""		vital	shared						
+30				InstallSysFile	"""System"", ""Ctl3dntDll"""		vital	shared						
+31				InstallShared	"System,Vfpole50Dll,VfpOle50"					%M		us		C:\WINDOWS\SYSTEM\
+33				DetectOlderFile	"OLEAUT32.DLL, 2.20.4028.1"					%M		nyi		
+34				Depend	33 ? 35 : 36							nyi		
+35				Depend	27 ? 36  37 38 : 36 37 39 38 40							nyi		
+36				InstallSysFile	"""System"", ""Olepro32Dll"""							nyi		
+37		OLEPRO32.DLL		SelfReg	"""System"", Olepro32Dll"					%M		nyi		
+38				InstallSysFile	"""System"", ""Oleaut32Dll"""							nyi		
+39		Setup Message	Installation of this product requires system administrator privileges.	CustomAction	"wizset32.dll, DetectAdminPrivileges"							nyi		
+40		Visual FoxPro Setup - Restart Windows	"You need to restart Windows NT to complete the installation.  After restarting Windows NT, Setup will be complete."	CustomAction	"wizset32.dll, DoMessageBox, 24"							nyi		
+41				InstallShared	"FoxPro Runtime,FoxproInt,foxproint,,8"					%M		us		C:\WINDOWS\SYSTEM\

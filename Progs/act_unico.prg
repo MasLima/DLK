@@ -1,0 +1,679 @@
+LOCAL lcFile,lnCampos,lnPos,ArrTmp,I,R
+
+IF MESSAGEBOX("Continuar Con el Proceso",4+32,"Adicionar Tablas") = 7
+	RETURN
+ENDIF
+
+CLOSE TABLES
+SET SAFETY OFF
+
+*IF DBUSED("Conta")
+*	SET DATABASE TO Conta
+*	CLOSE DATABASE
+*ENDIF
+
+*OPEN DATABASE &gDBConta
+SET DATABASE TO &gdbconta
+
+IF FILE_USE("ArtSld","E")
+	lnCampos = AFIELDS(laCampos)
+	lnPos = 0
+	FOR I = 1 TO lnCampos
+		IF ALLTRIM(UPPER(laCampos[I,1])) == UPPER('CanCon')
+			lnPos = I
+			EXIT
+		ENDIF
+	ENDFOR
+	IF  lnPos = 0
+	    ALTER TABLE ArtSld ADD COLUMN CanCon N(10,3)
+	ENDIF
+	USE
+ENDIF
+*- 
+*- 
+IF FILE_USE("ArtSldMes","E")
+	lnCampos = AFIELDS(laCampos)
+	lnPos = 0
+	FOR I = 1 TO lnCampos
+		IF ALLTRIM(UPPER(laCampos[I,1])) == UPPER('CanIngCon')
+			lnPos = I
+			EXIT
+		ENDIF
+	ENDFOR
+	IF  lnPos = 0
+	    ALTER TABLE ArtSldMes ADD COLUMN CanIngCon N(10,3)
+	ENDIF
+	lnPos = 0
+	FOR I = 1 TO lnCampos
+		IF ALLTRIM(UPPER(laCampos[I,1])) == UPPER('CanSalCon')
+			lnPos = I
+			EXIT
+		ENDIF
+	ENDFOR
+	IF  lnPos = 0
+	    ALTER TABLE ArtSldMes ADD COLUMN CanSalCon N(10,3)
+	ENDIF
+	USE
+ENDIF
+*- 
+*- 
+IF FILE_USE("ArtTsc","E")
+	lnCampos = AFIELDS(laCampos)
+	lnPos = 0
+	FOR I = 1 TO lnCampos
+		IF ALLTRIM(UPPER(laCampos[I,1])) == UPPER('IndSit')
+			lnPos = I
+			EXIT
+		ENDIF
+	ENDFOR
+	IF  lnPos = 0
+	    ALTER TABLE ArtTsc ADD COLUMN IndSit N(1)
+	ENDIF
+	lnPos = 0
+	FOR I = 1 TO lnCampos
+		IF ALLTRIM(UPPER(laCampos[I,1])) == UPPER('UltSit')
+			lnPos = I
+			EXIT
+		ENDIF
+	ENDFOR
+	IF  lnPos = 0
+	    ALTER TABLE ArtTsc ADD COLUMN UltSit N(1)
+	ENDIF
+	lnPos = 0
+	FOR I = 1 TO lnCampos
+		IF ALLTRIM(UPPER(laCampos[I,1])) == UPPER('UltMov')
+			lnPos = I
+			EXIT
+		ENDIF
+	ENDFOR
+	IF  lnPos = 0
+	    ALTER TABLE ArtTsc ADD COLUMN UltMov C(1)
+	ENDIF
+	lnPos = 0
+	FOR I = 1 TO lnCampos
+		IF ALLTRIM(UPPER(laCampos[I,1])) == UPPER('UltTsc')
+			lnPos = I
+			EXIT
+		ENDIF
+	ENDFOR
+	IF  lnPos = 0
+	    ALTER TABLE ArtTsc ADD COLUMN UltTsc C(2)
+	ENDIF
+	lnPos = 0
+	FOR I = 1 TO lnCampos
+		IF ALLTRIM(UPPER(laCampos[I,1])) == UPPER('IndTsc')
+			lnPos = I
+			EXIT
+		ENDIF
+	ENDFOR
+	IF  lnPos = 0
+	    ALTER TABLE ArtTsc ADD COLUMN IndTsc N(1)
+	ENDIF
+	lnPos = 0
+	FOR I = 1 TO lnCampos
+		IF ALLTRIM(UPPER(laCampos[I,1])) == UPPER('IndAdd')
+			lnPos = I
+			EXIT
+		ENDIF
+	ENDFOR
+	IF  lnPos = 0
+	    ALTER TABLE ArtTsc ADD COLUMN IndAdd N(1)
+	ENDIF
+	lnPos = 0
+	FOR I = 1 TO lnCampos
+		IF ALLTRIM(UPPER(laCampos[I,1])) == UPPER('IndDes')
+			lnPos = I
+			EXIT
+		ENDIF
+	ENDFOR
+	IF  lnPos = 0
+	    ALTER TABLE ArtTsc ADD COLUMN IndDes N(1)
+	ENDIF
+	lnPos = 0
+	FOR I = 1 TO lnCampos
+		IF ALLTRIM(UPPER(laCampos[I,1])) == UPPER('MovDes')
+			lnPos = I
+			EXIT
+		ENDIF
+	ENDFOR
+	IF  lnPos = 0
+	    ALTER TABLE ArtTsc ADD COLUMN MovDes C(1)
+	ENDIF
+	lnPos = 0
+	FOR I = 1 TO lnCampos
+		IF ALLTRIM(UPPER(laCampos[I,1])) == UPPER('TscDes')
+			lnPos = I
+			EXIT
+		ENDIF
+	ENDFOR
+	IF  lnPos = 0
+	    ALTER TABLE ArtTsc ADD COLUMN TscDes C(2)
+	ENDIF
+	lnPos = 0
+	FOR I = 1 TO lnCampos
+		IF ALLTRIM(UPPER(laCampos[I,1])) == UPPER('IndRef')
+			lnPos = I
+			EXIT
+		ENDIF
+	ENDFOR
+	IF  lnPos = 0
+	    ALTER TABLE ArtTsc ADD COLUMN IndRef N(1)
+	ENDIF
+	USE
+ENDIF
+
+IF FILE_USE("ArtMovDet","E")
+	lnCampos = AFIELDS(laCampos)
+	lnPos = 0
+	FOR I = 1 TO lnCampos
+		IF ALLTRIM(UPPER(laCampos[I,1])) == UPPER('UndCon')
+			lnPos = I
+			EXIT
+		ENDIF
+	ENDFOR
+	IF  lnPos = 0
+	    ALTER TABLE ArtMovDet ADD COLUMN UndCon C(3)
+	ENDIF
+	lnPos = 0
+	FOR I = 1 TO lnCampos
+		IF ALLTRIM(UPPER(laCampos[I,1])) == UPPER('CanCon')
+			lnPos = I
+			EXIT
+		ENDIF
+	ENDFOR
+	IF  lnPos = 0
+	    ALTER TABLE ArtMovDet ADD COLUMN CanCon N(10,3)
+	ENDIF
+	USE
+ENDIF
+
+*-
+IF FILE_USE("DocCab","E")
+	lnCampos = AFIELDS(laCampos)
+	lnPos = 0
+	FOR I = 1 TO lnCampos
+		IF ALLTRIM(UPPER(laCampos[I,1])) == UPPER('NroDet')
+			lnPos = I
+			EXIT
+		ENDIF
+	ENDFOR
+	IF  lnPos = 0
+	    ALTER TABLE DocCab ADD COLUMN NroDet C(20)
+	ENDIF
+	lnPos = 0
+	FOR I = 1 TO lnCampos
+		IF ALLTRIM(UPPER(laCampos[I,1])) == UPPER('FecDet')
+			lnPos = I
+			EXIT
+		ENDIF
+	ENDFOR
+	IF  lnPos = 0
+	    ALTER TABLE DocCab ADD COLUMN FecDet D(8)
+	ENDIF
+	lnPos = 0
+	FOR I = 1 TO lnCampos
+		IF ALLTRIM(UPPER(laCampos[I,1])) == UPPER('SecRef')
+			lnPos = I
+			EXIT
+		ENDIF
+	ENDFOR
+	IF  lnPos = 0
+	    ALTER TABLE DocCab ADD COLUMN SecRef I
+	ENDIF
+	lnPos = 0
+	FOR I = 1 TO lnCampos
+		IF ALLTRIM(UPPER(laCampos[I,1])) == UPPER('TipRef')
+			lnPos = I
+			EXIT
+		ENDIF
+	ENDFOR
+	IF  lnPos = 0
+	    ALTER TABLE DocCab ADD COLUMN TipRef C(02)
+	ENDIF
+	lnPos = 0
+	FOR I = 1 TO lnCampos
+		IF ALLTRIM(UPPER(laCampos[I,1])) == UPPER('NroRef')
+			lnPos = I
+			EXIT
+		ENDIF
+	ENDFOR
+	IF  lnPos = 0
+	    ALTER TABLE DocCab ADD COLUMN NroRef C(20)
+	ENDIF
+	USE
+ENDIF
+
+IF FILE_USE("BcoCab","E")
+	lnCampos = AFIELDS(laCampos)
+	lnPos = 0
+	FOR I = 1 TO lnCampos
+		IF ALLTRIM(UPPER(laCampos[I,1])) == UPPER('CodOpe')
+			lnPos = I
+			EXIT
+		ENDIF
+	ENDFOR
+	IF  lnPos = 0
+	    ALTER TABLE BcoCab ADD COLUMN CodOpe C(3)
+	ENDIF
+	lnPos = 0
+	FOR I = 1 TO lnCampos
+		IF ALLTRIM(UPPER(laCampos[I,1])) == UPPER('CodPgo')
+			lnPos = I
+			EXIT
+		ENDIF
+	ENDFOR
+	IF  lnPos = 0
+	    ALTER TABLE BcoCab ADD COLUMN CodPgo C(3)
+	ENDIF	
+	USE
+ENDIF
+
+IF FILE_USE("BcoCtaCte","E")
+	lnCampos = AFIELDS(laCampos)
+	lnPos = 0
+	FOR I = 1 TO lnCampos
+		IF ALLTRIM(UPPER(laCampos[I,1])) == UPPER('UsuAdd')
+			lnPos = I
+			EXIT
+		ENDIF
+	ENDFOR
+	IF  lnPos = 0
+	    ALTER TABLE BcoCtaCte ADD COLUMN UsuAdd C(4)
+	ENDIF
+	lnPos = 0
+	FOR I = 1 TO lnCampos
+		IF ALLTRIM(UPPER(laCampos[I,1])) == UPPER('FecAdd')
+			lnPos = I
+			EXIT
+		ENDIF
+	ENDFOR
+	IF  lnPos = 0
+	    ALTER TABLE BcoCtaCte ADD COLUMN FecAdd T(8)
+	ENDIF
+	lnPos = 0
+	FOR I = 1 TO lnCampos
+		IF ALLTRIM(UPPER(laCampos[I,1])) == UPPER('UsuAct')
+			lnPos = I
+			EXIT
+		ENDIF
+	ENDFOR
+	IF  lnPos = 0
+	    ALTER TABLE BcoCtaCte ADD COLUMN UsuAct C(4)
+	ENDIF
+	lnPos = 0
+	FOR I = 1 TO lnCampos
+		IF ALLTRIM(UPPER(laCampos[I,1])) == UPPER('FecAct')
+			lnPos = I
+			EXIT
+		ENDIF
+	ENDFOR
+	IF  lnPos = 0
+	    ALTER TABLE BcoCtaCte ADD COLUMN FecAct T(8)
+	ENDIF
+	USE
+ENDIF
+
+
+IF FILE_USE("MovCab","E")
+	lnCampos = AFIELDS(laCampos)
+	lnPos = 0
+	FOR I = 1 TO lnCampos
+		IF ALLTRIM(UPPER(laCampos[I,1])) == UPPER('CodOpe')
+			lnPos = I
+			EXIT
+		ENDIF
+	ENDFOR
+	IF  lnPos = 0
+	    ALTER TABLE MovCab ADD COLUMN CodOpe C(3)
+	ENDIF
+	lnPos = 0
+	FOR I = 1 TO lnCampos
+		IF ALLTRIM(UPPER(laCampos[I,1])) == UPPER('CodPgo')
+			lnPos = I
+			EXIT
+		ENDIF
+	ENDFOR
+	IF  lnPos = 0
+	    ALTER TABLE MovCab ADD COLUMN CodPgo C(3)
+	ENDIF	
+	USE
+ENDIF
+
+IF FILE_USE("MovDet","E")
+	lnCampos = AFIELDS(laCampos)
+	lnPos = 0
+	FOR I = 1 TO lnCampos
+		IF ALLTRIM(UPPER(laCampos[I,1])) == UPPER('TipTsc')
+			lnPos = I
+			EXIT
+		ENDIF
+	ENDFOR
+	IF  lnPos = 0
+	    ALTER TABLE MovDet ADD COLUMN TipTsc C(02)
+	ENDIF
+	USE
+ENDIF
+
+SET DATABASE TO &gdbConta
+lcFile = gRutEmp+'\AuxAct.DBF'
+IF !FILE("&lcFile")
+	CREATE TABLE &lcFile NAME 'AuxAct' (TipAux C(02), CodAux C(04) NOT NULL, ;
+		TipAct C(02), CtaAct C(10), DesAct C(50), MarAct C(30), ModAct C(30), SerAct C(20), ;
+		FecAdq D, FecIni D, DepMet C(30), DocAut C(20), PcjDep N(7,3), ;
+		CtaAju C(10), CtaDep C(10), CtaAjuDep C(10), CtaRev C(10), CtaRevDep C(10), IndSit N(01), FecDit D, ;
+		USUADD C(4) NOT NULL, FECADD T NOT NULL, USUACT C(4) NOT NULL, FECACT T NOT NULL)
+	INDEX ON TipAux+CodAux TAG CodAux
+	INDEX ON DesAct TAG DesAct
+	INDEX ON TipAct TAG TipAct
+	INDEX ON CtaAct TAG CtaAct
+	USE
+ENDIF
+
+SET DATABASE TO &gdbConta
+lcFile = gRutEmp+'\TipAct.DBF'
+IF !FILE("&lcFile")
+	CREATE TABLE &lcFile NAME 'TipAct' (TipAct C(02), DesTip C(50), ;
+		DepMet C(20), PcjDep N(7,3), CtaAct C(10), CtaAju C(10), CtaDep C(10), CtaAjuDep C(10), CtaRev C(10), CtaRevDep C(10), ;
+		USUADD C(4) NOT NULL, FECADD T NOT NULL, USUACT C(4) NOT NULL, FECACT T NOT NULL)
+	INDEX ON TipAct TAG TipAct
+	INDEX ON DesTip TAG DesTip
+	USE
+ENDIF
+
+SET DATABASE TO &gdbComun
+lcFile = gRutDat+'\TipTsc.DBF'
+IF !FILE("&lcFile")
+	CREATE TABLE &lcFile NAME 'TipTsc' (TipTsc C(02) NOT NULL, DesTsc C(40) NOT NULL, ;
+		INDELI N(1) NOT NULL, INDEST N(1) NOT NULL, ;
+		USUADD C(4) NOT NULL, FECADD T NOT NULL, USUACT C(4) NOT NULL, FECACT T NOT NULL)
+	INDEX ON TipTsc TAG TipTsc
+	INDEX ON DesTsc TAG DesTsc
+	USE
+
+	INSERT INTO TipTsc (TipTsc,DesTsc) VALUES ("01","ACTIVOS ADQUISICIONES, ADICIONES")
+	INSERT INTO TipTsc (TipTsc,DesTsc) VALUES ("02","ACTIVOS MEJORAS")
+	INSERT INTO TipTsc (TipTsc,DesTsc) VALUES ("03","ACTIVOS RETIROS Y O BAJAS")
+	INSERT INTO TipTsc (TipTsc,DesTsc) VALUES ("04","ACTIVOS OTROS AJUSTES")
+	INSERT INTO TipTsc (TipTsc,DesTsc) VALUES ("05","DEPRECIA ADQUISICIONES, ADICIONES")
+	INSERT INTO TipTsc (TipTsc,DesTsc) VALUES ("06","DEPRECIA MEJORAS")
+	INSERT INTO TipTsc (TipTsc,DesTsc) VALUES ("07","DEPRECIA RETIROS Y O BAJAS")
+	INSERT INTO TipTsc (TipTsc,DesTsc) VALUES ("08","DEPRECIA OTROS AJUSTES")
+	INSERT INTO TipTsc (TipTsc,DesTsc) VALUES ("09","REVALUACION VOLUNTARIA")
+	INSERT INTO TipTsc (TipTsc,DesTsc) VALUES ("10","REVALUA POR REORGANIZACION DE SOCIEDADES")
+	INSERT INTO TipTsc (TipTsc,DesTsc) VALUES ("11","REVALUACION OTROS")
+	INSERT INTO TipTsc (TipTsc,DesTsc) VALUES ("12","DEPRECIA REVALUACION VOLUNTARIA")
+	INSERT INTO TipTsc (TipTsc,DesTsc) VALUES ("13","DEPRECIA REVALUA POR REORGANIZACION DE SOCIEDADES")
+	INSERT INTO TipTsc (TipTsc,DesTsc) VALUES ("14","DEPRECIA REVALUACION OTROS")
+ENDIF
+
+*- 
+SET DATABASE TO &gdbcomun
+lcFile = gRutDat+'\BcoOpe.DBF'
+IF !FILE("&lcFile")
+	CREATE TABLE &lcFile NAME 'BcoOpe' (CodOpe C(03) NOT NULL, DesOpe C(40) NOT NULL, ;
+		TipOpe C(01) NOT NULL, INDELI N(1) NOT NULL, INDEST N(1) NOT NULL, ;
+		USUADD C(4) NOT NULL, FECADD T NOT NULL, USUACT C(4) NOT NULL, FECACT T NOT NULL)
+	INDEX ON CodOpe TAG CodOpe
+	INDEX ON DESOPE TAG DESOPE
+	
+	INSERT INTO BcoOpe (CodOpe,DesOpe) VALUES("000","SALDO INICIAL")
+	INSERT INTO BcoOpe (CodOpe,DesOpe) VALUES("001","COBRANZA")
+	INSERT INTO BcoOpe (CodOpe,DesOpe) VALUES("002","PAGOS")
+	INSERT INTO BcoOpe (CodOpe,DesOpe) VALUES("003","TRANSAFERENCIAS")
+	INSERT INTO BcoOpe (CodOpe,DesOpe) VALUES("999","SALDO FINAL")
+	USE
+ENDIF
+
+*- 
+SET DATABASE TO &gdbcomun
+lcFile = gRutDat+'\BcoMed.DBF'
+IF !FILE("&lcFile")
+	CREATE TABLE &lcFile NAME 'BcoMed' (CodPgo C(03) NOT NULL, DesPgo C(60) NOT NULL, ;
+		TipOpe C(01) NOT NULL, INDELI N(1) NOT NULL, INDEST N(1) NOT NULL, ;
+		USUADD C(4) NOT NULL, FECADD T NOT NULL, USUACT C(4) NOT NULL, FECACT T NOT NULL)
+	INDEX ON CodPgo TAG CodPgo
+	INDEX ON DesPgo TAG DesPgo
+	
+	INSERT INTO BcoMed (CodPgo,DesPgo) VALUES ("001","DEPÓSITO EN CUENTA")
+	INSERT INTO BcoMed (CodPgo,DesPgo) VALUES ("002","GIRO")
+	INSERT INTO BcoMed (CodPgo,DesPgo) VALUES ("003","TRANSFERENCIA DE FONDOS")
+	INSERT INTO BcoMed (CodPgo,DesPgo) VALUES ("004","ORDEN DE PAGO")
+	INSERT INTO BcoMed (CodPgo,DesPgo) VALUES ("005","TARJETA DE DÉBITO")
+	INSERT INTO BcoMed (CodPgo,DesPgo) VALUES ("006","TARJETA DE CRÉDITO")
+	INSERT INTO BcoMed (CodPgo,DesPgo) VALUES ("007",'CHEQUES CON LA CLÁUSULA DE "NO NEGOCIABLE", "INTRANSFERIBLES", "NO A LA ORDEN" U OTRA EQUIVALENTE, A QUE SE REFIERE EL INCISO F) DEL ARTICULO 5° DEL DECRETO LEGISLATIVO')
+	INSERT INTO BcoMed (CodPgo,DesPgo) VALUES ("008","EFECTIVO, POR OPERAC. EN LAS QUE NO EXISTE OBLIGAC. MED. PAGO")
+	INSERT INTO BcoMed (CodPgo,DesPgo) VALUES ("009","EFECTIVO, EN LOS DEMÁS CASOS")
+	INSERT INTO BcoMed (CodPgo,DesPgo) VALUES ("010","MEDIOS DE PAGO DE COMERCIO EXTERIOR")
+	INSERT INTO BcoMed (CodPgo,DesPgo) VALUES ("011","LETRAS DE CAMBIO")
+	INSERT INTO BcoMed (CodPgo,DesPgo) VALUES ("101","TRANSFERENCIAS - COMERCIO EXTERIOR")
+	INSERT INTO BcoMed (CodPgo,DesPgo) VALUES ("102","CHEQUES BANCARIOS  - COMERCIO EXTERIOR")
+	INSERT INTO BcoMed (CodPgo,DesPgo) VALUES ("103","ORDEN DE PAGO SIMPLE  - COMERCIO EXTERIOR")
+	INSERT INTO BcoMed (CodPgo,DesPgo) VALUES ("104","ORDEN DE PAGO DOCUMENTARIO  - COMERCIO EXTERIOR")
+	INSERT INTO BcoMed (CodPgo,DesPgo) VALUES ("105","REMESA SIMPLE  - COMERCIO EXTERIOR")
+	INSERT INTO BcoMed (CodPgo,DesPgo) VALUES ("106","REMESA DOCUMENTARIA  - COMERCIO EXTERIOR")
+	INSERT INTO BcoMed (CodPgo,DesPgo) VALUES ("107","CARTA DE CRÉDITO SIMPLE  - COMERCIO EXTERIOR")
+	INSERT INTO BcoMed (CodPgo,DesPgo) VALUES ("108","CARTA DE CRÉDITO DOCUMENTARIO  - COMERCIO EXTERIOR")
+	INSERT INTO BcoMed (CodPgo,DesPgo) VALUES ("999","OTROS MEDIOS DE PAGO (ESPECIFICAR)")
+
+*	lcFile = gRuta+"\Libros\importar\MedPgo.txt"
+*	APPEN FROM &lcFile TYPE SDF
+	USE
+ENDIF
+
+
+IF FILE_USE("ArtTsc","E")
+	lnCampos = AFIELDS(laCampos)
+	lnPos = 0
+	FOR I = 1 TO lnCampos
+		IF ALLTRIM(UPPER(laCampos[I,1])) == UPPER('TipOpe')
+			lnPos = I
+			EXIT
+		ENDIF
+	ENDFOR
+	IF  lnPos = 0
+	    ALTER TABLE ArtTsc ADD COLUMN TipOpe C(02)
+	ENDIF
+	USE
+ENDIF
+
+IF FILE_USE("ArtTip","E")
+	lnCampos = AFIELDS(laCampos)
+	lnPos = 0
+	FOR I = 1 TO lnCampos
+		IF ALLTRIM(UPPER(laCampos[I,1])) == UPPER('TipExi')
+			lnPos = I
+			EXIT
+		ENDIF
+	ENDFOR
+	IF  lnPos = 0
+	    ALTER TABLE ArtTip ADD COLUMN TipExi C(02)
+	ENDIF
+	USE
+ENDIF
+
+IF FILE_USE("ArtUnd","E")
+	lnCampos = AFIELDS(laCampos)
+	lnPos = 0
+	FOR I = 1 TO lnCampos
+		IF ALLTRIM(UPPER(laCampos[I,1])) == UPPER('LibUnd')
+			lnPos = I
+			EXIT
+		ENDIF
+	ENDFOR
+	IF  lnPos = 0
+	    ALTER TABLE ArtUnd ADD COLUMN LibUnd C(02)
+	ENDIF
+	USE
+ENDIF
+
+IF FILE_USE("TipMnd","E")
+	lnCampos = AFIELDS(laCampos)
+	lnPos = 0
+	FOR I = 1 TO lnCampos
+		IF ALLTRIM(UPPER(laCampos[I,1])) == UPPER('LibMnd')
+			lnPos = I
+			EXIT
+		ENDIF
+	ENDFOR
+	IF  lnPos = 0
+	    ALTER TABLE TipMnd ADD COLUMN LibMnd C(01)
+	ENDIF
+	USE
+ENDIF
+
+IF FILE_USE("TabBco","E")
+	lnCampos = AFIELDS(laCampos)
+	lnPos = 0
+	FOR I = 1 TO lnCampos
+		IF ALLTRIM(UPPER(laCampos[I,1])) == UPPER('CodEnt')
+			lnPos = I
+			EXIT
+		ENDIF
+	ENDFOR
+	IF  lnPos = 0
+	    ALTER TABLE TabBco ADD COLUMN CodEnt C(02)
+	ENDIF
+	USE
+ENDIF
+
+SET DATABASE TO &gdbComun
+lcFile = gRutDat+'\DocIdd.DBF'
+IF !FILE("&lcFile")
+	CREATE TABLE &lcFile NAME 'DocIdd' (TipDoc C(01) NOT NULL, DESDoc C(30) NOT NULL)
+	INDEX ON TipDoc TAG TipDoc
+	INDEX ON DesDoc TAG DesDoc
+	
+	INSERT INTO DocIdd(TipDoc,DESDoc) VALUES("0","OTROS TIPOS DE DOCUMENTOS")
+	INSERT INTO DocIdd(TipDoc,DESDoc) VALUES("1","DOCUMENTO NACIONAL DE IDENTIDAD (DNI)")
+	INSERT INTO DocIdd(TipDoc,DESDoc) VALUES("4","CARNET DE EXTRANJERIA")
+	INSERT INTO DocIdd(TipDoc,DESDoc) VALUES("6","REGISTRO ÚNICO DE CONTRIBUYENTES")
+	INSERT INTO DocIdd(TipDoc,DESDoc) VALUES("7","PASAPORTE")
+	USE
+ENDIF
+
+SET DATABASE TO &gdbComun
+lcFile = gRutDat+'\TipExi.DBF'
+IF !FILE("&lcFile")
+	CREATE TABLE &lcFile NAME 'TipExi' (TipExi C(02) NOT NULL, DesExi C(40) NOT NULL)
+	INDEX ON TipExi TAG TipExi
+	INDEX ON DesExi TAG DesExi
+	
+	INSERT INTO TipExi(TipExi,DesExi) VALUES("01","MERCADERÍA")
+	INSERT INTO TipExi(TipExi,DesExi) VALUES("02","PRODUCTO TERMINADO")
+	INSERT INTO TipExi(TipExi,DesExi) VALUES("03","MATERIAS PRIMAS Y AUXILIARES - MATERIALES")
+	INSERT INTO TipExi(TipExi,DesExi) VALUES("04","ENVASES Y EMBALAJES")
+	INSERT INTO TipExi(TipExi,DesExi) VALUES("05","SUMINISTROS DIVERSOS")
+	INSERT INTO TipExi(TipExi,DesExi) VALUES("99","OTROS (ESPECIFICAR)")
+	USE
+ENDIF
+
+SET DATABASE TO &gdbComun
+lcFile = gRutDat+'\LibOpe.DBF'
+IF !FILE("&lcFile")
+	CREATE TABLE &lcFile NAME 'LibOpe' (TipOpe C(02) NOT NULL, DesOpe C(40) NOT NULL)
+	INDEX ON TipOpe TAG TipOpe
+	INDEX ON DesOpe TAG DesOpe
+	
+	INSERT INTO LibOpe(TipOpe,DesOpe) VALUES("01","VENTA")
+	INSERT INTO LibOpe(TipOpe,DesOpe) VALUES("02","COMPRA")
+	INSERT INTO LibOpe(TipOpe,DesOpe) VALUES("03","CONSIGNACIÓN RECIBIDA")
+	INSERT INTO LibOpe(TipOpe,DesOpe) VALUES("04","CONSIGNACIÓN ENTREGADA")
+	INSERT INTO LibOpe(TipOpe,DesOpe) VALUES("05","DEVOLUCIÓN RECIBIDA")
+	INSERT INTO LibOpe(TipOpe,DesOpe) VALUES("06","DEVOLUCIÓN ENTREGADA")
+	INSERT INTO LibOpe(TipOpe,DesOpe) VALUES("07","PROMOCIÓN")
+	INSERT INTO LibOpe(TipOpe,DesOpe) VALUES("08","PREMIO")
+	INSERT INTO LibOpe(TipOpe,DesOpe) VALUES("09","DONACIÓN")
+	INSERT INTO LibOpe(TipOpe,DesOpe) VALUES("10","SALIDA A PRODUCCIÓN")
+	INSERT INTO LibOpe(TipOpe,DesOpe) VALUES("11","TRANSFERENCIA ENTRE ALMACENES")
+	INSERT INTO LibOpe(TipOpe,DesOpe) VALUES("12","RETIRO")
+	INSERT INTO LibOpe(TipOpe,DesOpe) VALUES("13","MERMAS")
+	INSERT INTO LibOpe(TipOpe,DesOpe) VALUES("14","DESMEDROS")
+	INSERT INTO LibOpe(TipOpe,DesOpe) VALUES("15","DESTRUCCIÓN")
+	INSERT INTO LibOpe(TipOpe,DesOpe) VALUES("16","SALDO INICIAL")
+	INSERT INTO LibOpe(TipOpe,DesOpe) VALUES("99","OTROS (ESPECIFICAR)")
+	USE
+ENDIF
+
+SET DATABASE TO &gdbComun
+lcFile = gRutDat+'\EntFin.DBF'
+IF !FILE("&lcFile")
+	CREATE TABLE &lcFile NAME 'EntFin' (CodEnt C(02) NOT NULL, DesEnt C(40) NOT NULL)
+	INDEX ON CodEnt TAG CodEnt
+	INDEX ON DesEnt TAG DesEnt
+	
+	INSERT INTO EntFin(CodEnt,DesEnt) VALUES("01","CENTRAL RESERVA DEL PERU")
+	INSERT INTO EntFin(CodEnt,DesEnt) VALUES("02","DE CREDITO DEL PERU")
+	INSERT INTO EntFin(CodEnt,DesEnt) VALUES("03","INTERNACIONAL DEL PERU")
+	INSERT INTO EntFin(CodEnt,DesEnt) VALUES("05","LATINO")
+	INSERT INTO EntFin(CodEnt,DesEnt) VALUES("07","CITIBANK DEL PERU S.A.")
+	INSERT INTO EntFin(CodEnt,DesEnt) VALUES("08","STANDARD CHARTERED")
+	INSERT INTO EntFin(CodEnt,DesEnt) VALUES("09","SCOTIABANK PERU")
+	INSERT INTO EntFin(CodEnt,DesEnt) VALUES("11","CONTINENTAL")
+	INSERT INTO EntFin(CodEnt,DesEnt) VALUES("12","DE LIMA")
+	INSERT INTO EntFin(CodEnt,DesEnt) VALUES("16","MERCANTIL")
+	INSERT INTO EntFin(CodEnt,DesEnt) VALUES("18","NACION")
+	INSERT INTO EntFin(CodEnt,DesEnt) VALUES("22","SANTANDER CENTRAL HISPANO")
+	INSERT INTO EntFin(CodEnt,DesEnt) VALUES("23","DE COMERCIO")
+	INSERT INTO EntFin(CodEnt,DesEnt) VALUES("25","REPUBLICA")
+	INSERT INTO EntFin(CodEnt,DesEnt) VALUES("26","NBK BANK")
+	INSERT INTO EntFin(CodEnt,DesEnt) VALUES("29","BANCOSUR")
+	INSERT INTO EntFin(CodEnt,DesEnt) VALUES("35","FINANCIERO DEL PERU")
+	INSERT INTO EntFin(CodEnt,DesEnt) VALUES("37","DEL PROGRESO")
+	INSERT INTO EntFin(CodEnt,DesEnt) VALUES("38","INTERAMERICANO FINANZAS")
+	INSERT INTO EntFin(CodEnt,DesEnt) VALUES("39","BANEX")
+	INSERT INTO EntFin(CodEnt,DesEnt) VALUES("40","NUEVO MUNDO")
+	INSERT INTO EntFin(CodEnt,DesEnt) VALUES("41","SUDAMERICANO")
+	INSERT INTO EntFin(CodEnt,DesEnt) VALUES("42","DEL LIBERTADOR")
+	INSERT INTO EntFin(CodEnt,DesEnt) VALUES("43","DEL TRABAJO")
+	INSERT INTO EntFin(CodEnt,DesEnt) VALUES("44","SOLVENTA")
+	INSERT INTO EntFin(CodEnt,DesEnt) VALUES("45","SERBANCO SA.")
+	INSERT INTO EntFin(CodEnt,DesEnt) VALUES("46","BANK OF BOSTON")
+	INSERT INTO EntFin(CodEnt,DesEnt) VALUES("47","ORION")
+	INSERT INTO EntFin(CodEnt,DesEnt) VALUES("48","DEL PAIS")
+	INSERT INTO EntFin(CodEnt,DesEnt) VALUES("49","MI BANCO")
+	INSERT INTO EntFin(CodEnt,DesEnt) VALUES("53","HSBC BANK PERU S.A.")
+	INSERT INTO EntFin(CodEnt,DesEnt) VALUES("99","OTROS")
+	USE
+ENDIF
+
+SET DATABASE TO &gdbComun
+lcFile = gRutDat+'\LibMnd.DBF'
+IF !FILE("&lcFile")
+	CREATE TABLE &lcFile NAME 'LibMnd' (LibMnd C(01) NOT NULL, LibDesMnd C(30) NOT NULL)
+	INDEX ON LibMnd TAG LibMnd
+	INDEX ON LibDesMnd TAG LibDesMnd
+	
+	INSERT INTO LibMnd(LibMnd,LibDesMnd) VALUES("1","NUEVOS SOLES")
+	INSERT INTO LibMnd(LibMnd,LibDesMnd) VALUES("2","DÓLARES AMERICANOS")
+	INSERT INTO LibMnd(LibMnd,LibDesMnd) VALUES("9","OTRA MONEDA (ESPECIFICAR)")
+	USE
+ENDIF
+
+SET DATABASE TO &gdbComun
+lcFile = gRutDat+'\LibUnd.DBF'
+IF !FILE("&lcFile")
+	CREATE TABLE &lcFile NAME 'LibUnd' (LibUnd C(02) NOT NULL, LibDesUnd C(30) NOT NULL)
+	INDEX ON LibUnd TAG LibUnd
+	INDEX ON LibDesUnd TAG LibDesUnd
+	
+	INSERT INTO LibUnd(LibUnd,LibDesUnd) VALUES("01","KILOGRAMOS")
+	INSERT INTO LibUnd(LibUnd,LibDesUnd) VALUES("02","LIBRAS")
+	INSERT INTO LibUnd(LibUnd,LibDesUnd) VALUES("03","TONELADAS LARGAS")
+	INSERT INTO LibUnd(LibUnd,LibDesUnd) VALUES("04","TONELADAS MÉTRICAS")
+	INSERT INTO LibUnd(LibUnd,LibDesUnd) VALUES("05","TONELADAS CORTAS")
+	INSERT INTO LibUnd(LibUnd,LibDesUnd) VALUES("06","GRAMOS")
+	INSERT INTO LibUnd(LibUnd,LibDesUnd) VALUES("07","UNIDADES")
+	INSERT INTO LibUnd(LibUnd,LibDesUnd) VALUES("08","LITROS")
+	INSERT INTO LibUnd(LibUnd,LibDesUnd) VALUES("09","GALONES")
+	INSERT INTO LibUnd(LibUnd,LibDesUnd) VALUES("10","BARRILES")
+	INSERT INTO LibUnd(LibUnd,LibDesUnd) VALUES("11","LATAS")
+	INSERT INTO LibUnd(LibUnd,LibDesUnd) VALUES("12","CAJAS")
+	INSERT INTO LibUnd(LibUnd,LibDesUnd) VALUES("13","MILLARES")
+	INSERT INTO LibUnd(LibUnd,LibDesUnd) VALUES("14","METROS CÚBICOS")
+	INSERT INTO LibUnd(LibUnd,LibDesUnd) VALUES("15","METROS")
+	INSERT INTO LibUnd(LibUnd,LibDesUnd) VALUES("99","OTROS (ESPECIFICAR)")
+	USE
+ENDIF
+
+MESSAGEBOX('Proceso Termino Correctamente',0+64,"Adicion de Tablas")
+RETURN

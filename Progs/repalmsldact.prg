@@ -1,0 +1,73 @@
+*         1         2         3         4         5         6         7         8         9         0         1         2         3
+*123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012
+*Codigo          Descripcion                    		            UND	      STOCK        Costo         Total
+*123456789012345 12345678901234567890123456789012345678901234567890 123 999,999.999 999,999.9999 99,999,999.99
+
+PUBLIC lnPag, R
+LOCAL lcFile, lcProceso
+lcFile = "AlmSldAct"
+lcProceso = "Rep_AlmSldAct()"
+lnPag = 0
+R = 0
+Imprimetexto(lcFile,lcProceso)
+RETURN
+
+PROCEDURE REP_AlmSldAct
+LOCAL lnArt,lnTotSld
+
+@0,0 SAY CHR(18)+CHR(15)
+
+TIT_AlmSldAct()
+
+STORE 0 TO lnArt,lnTotSld
+SELE TmpRep
+GO TOP 
+DO WHILE !EOF()
+	R = R + 1
+	IF R > 70
+		TIT_AlmSldAct()
+		R = R + 1
+	ENDIF
+	@R,001 SAY PADR(CodArt,15)
+	@R,017 SAY PADR(DesArt,50)
+	@R,068 SAY PADR(CodUnd,03)
+	@R,072 SAY CanSld PICTURE "@Z 999,999.999"
+	@R,084 SAY ImpSld PICTURE "@Z 999,999.9999"
+	@R,097 SAY TotSld PICTURE "@Z 9,9999,999.99"
+	lnArt = lnArt + 1
+	lnTotSld = lnTotSld + TotSld
+	SKIP
+ENDDO
+R = R + 1
+@R,001 SAY REPLICATE("-",132)
+R = R + 1
+@R,013 SAY "TOTAL"
+@R,020 SAY lnArt PICTURE "999,999"
+@R,097 SAY lnTotSld PICTURE "@Z 99,999,999.99"
+R = R + 1
+@R,001 SAY REPLICATE("-",132)
+RETURN
+
+PROCEDURE TIT_AlmSldAct()
+lnPag =lnPag + 1
+IF lnPag > 1
+	@00,00 SAY ""
+ENDIF
+@01,001 SAY PADR(TabPar.NomEmp,40)
+@01,042 SAY PADC(pTitNom,76)
+@01,120 SAY DATE()
+@02,001 SAY PADR("RUC : "+TabPar.NroRuc,40)
+@02,042 SAY PADC(pTitRng,76)
+@02,120 SAY PADR(ALLTRIM(TTOC(DATETIME(),2)),10)
+@02,042 SAY PADC(pTitMnd,76)
+@03,120 SAY lnPag PICTURE "@B 9999"
+@04,001 SAY REPLICATE("-",132)
+@05,001 SAY "Codigo"
+@05,017 SAY "Descripcion"
+@05,068 SAY "UND"
+@05,072 SAY PADL("STOCK",11)
+@05,084 SAY PADL("Imp Costo",12)
+@05,097 SAY PADL("Tot Costo",13)
+@06,001 SAY REPLICATE("-",132)
+R=7
+RETURN

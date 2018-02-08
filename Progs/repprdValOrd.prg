@@ -1,0 +1,55 @@
+*         1         2         3         4         5         6         7         8         9         0         1         2         3         4         5         6         7         8         9         0                             
+*12345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890                 
+*1234567890123456789  123456789012345678901234567890123456789012345678901234567890
+
+PUBLIC lnPag, R
+LOCAL lcFile, lcProceso
+lcFile = "PrdValOrd"
+lcProceso = "Rep_PrdErr()"
+lnPag = 0
+R = 0
+Imprimetexto(lcFile,lcProceso)
+RETURN
+
+PROCEDURE REP_PrdErr
+
+@PROW(),PCOL() SAY CHR(27)+"C"+CHR(66) 
+@PROW(),PCOL() SAY CHR(18)+CHR(15)
+
+
+TIT_PrdErr()
+SELE TmpRep
+GO TOP
+DO WHILE !EOF()
+	R = R + 1
+	IF R > 55
+		TIT_PrdErr()
+		R = R + 1
+	ENDIF
+	@R,001 SAY PADR(NroDoc,20)
+	@R,022 SAY PADR(DesErr,80)
+	SKIP
+ENDDO
+RETURN
+
+PROCEDURE TIT_PrdErr()
+LOCAL lnColumna,lnOldSele
+lnOldSele = SELECT()
+lnPag =lnPag + 1
+IF lnPag > 1
+	@00,00 SAY ""
+ENDIF
+@01,001 SAY PADR(TabPar.NomEmp,40)
+@01,042 SAY PADC(pTitNom,76)
+@01,120 SAY DATE()
+@02,001 SAY PADR("RUC : "+TabPar.NroRuc,40)
+@02,042 SAY PADC(pTitRng,76)
+@02,120 SAY TIME()
+@03,042 SAY PADC(pTitMnd,76)
+@03,120 SAY lnPag PICTURE "@B 9999"
+@04,001 SAY REPLICATE("-",132)
+@05,001 SAY "Codigo"
+@05,022 SAY "Descripcion"
+@06,001 SAY REPLICATE("-",132)
+R=8
+RETURN

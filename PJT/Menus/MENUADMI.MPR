@@ -1,0 +1,671 @@
+*       *********************************************************
+*       *                                                         
+*       * 07/10/2014           MENUADMI.MPR             01:05:30  
+*       *                                                         
+*       *********************************************************
+*       *                                                         
+*       * Nombre del autor                                        
+*       *                                                         
+*       * Copyright (C) 2014 Nombre de compañía                   
+*       * Dirección                                               
+*       * Ciudad,     Código pos                                  
+*       * País                                              
+*       *                                                         
+*       * Descripción:                                            
+*       * Este PROGRAMA lo ha generado automáticamente GENMENU.    
+*       *                                                         
+*       *********************************************************
+
+
+*       *********************************************************
+*       *                                                         
+*       *                    Definición de menú                   
+*       *                                                         
+*       *********************************************************
+*
+
+SET SYSMENU TO
+SET SYSMENU AUTOMATIC
+
+DEFINE PAD _msm_file OF _MSYSMENU PROMPT "\<Archivo" COLOR SCHEME 3 ;
+	NEGOTIATE LEFT ;
+	KEY ALT+A, "" ;
+	MESSAGE "Crea, abre, guarda o imprime archivos, o sale de Visual FoxPro"
+DEFINE PAD _46i02c8sj OF _MSYSMENU PROMPT "\<Movimientos" COLOR SCHEME 3 ;
+	KEY ALT+M, "" ;
+	SKIP FOR FunMenuAcc("Mov")
+DEFINE PAD _46i02c8sk OF _MSYSMENU PROMPT "\<Reportes\Consultas" COLOR SCHEME 3 ;
+	KEY ALT+R, "" ;
+	SKIP FOR FunMenuAcc("Rep")
+DEFINE PAD _46i02c8sl OF _MSYSMENU PROMPT "\<Gestion" COLOR SCHEME 3 ;
+	KEY ALT+G, "" ;
+	SKIP FOR FunMenuAcc("Ges")
+DEFINE PAD _46i02c8sm OF _MSYSMENU PROMPT "\<Mantenimiento" COLOR SCHEME 3 ;
+	KEY ALT+M, "" ;
+	SKIP FOR FunMenuAcc("Mnt")
+DEFINE PAD _46i02c8sn OF _MSYSMENU PROMPT "\<Procesos" COLOR SCHEME 3 ;
+	KEY ALT+P, "" ;
+	SKIP FOR FunMenuAcc("Pcs")
+DEFINE PAD _46i02c8so OF _MSYSMENU PROMPT "\<SUNAT" COLOR SCHEME 3 ;
+	KEY ALT+S, "" ;
+	SKIP FOR FunMenuAcc("SUNAT")
+DEFINE PAD _46i02c8sp OF _MSYSMENU PROMPT "\<Utilitarios" COLOR SCHEME 3 ;
+	KEY ALT+U, "" ;
+	SKIP FOR FunMenuAcc("Util")
+DEFINE PAD _msm_windo OF _MSYSMENU PROMPT "\<Ventana" COLOR SCHEME 3 ;
+	NEGOTIATE RIGHT ;
+	KEY ALT+V, "" ;
+	MESSAGE "Manipula ventanas, y muestra las ventanas Comandos y Sesión de datos"
+DEFINE PAD _46i02c8sq OF _MSYSMENU PROMPT "Ay\<uda" COLOR SCHEME 3 ;
+	KEY ALT+U, "" ;
+	MESSAGE "Muestra Ayuda"
+ON PAD _msm_file OF _MSYSMENU ACTIVATE POPUP _mfile
+ON PAD _46i02c8sj OF _MSYSMENU ACTIVATE POPUP movimiento
+ON PAD _46i02c8sk OF _MSYSMENU ACTIVATE POPUP reportesco
+ON PAD _46i02c8sl OF _MSYSMENU ACTIVATE POPUP gestion
+ON PAD _46i02c8sm OF _MSYSMENU ACTIVATE POPUP mantenimie
+ON PAD _46i02c8sn OF _MSYSMENU ACTIVATE POPUP procesos
+ON PAD _46i02c8so OF _MSYSMENU ACTIVATE POPUP sunat
+ON PAD _46i02c8sp OF _MSYSMENU ACTIVATE POPUP utilitario
+ON PAD _msm_windo OF _MSYSMENU ACTIVATE POPUP _mwindow
+ON PAD _46i02c8sq OF _MSYSMENU ACTIVATE POPUP _msystem
+
+DEFINE POPUP _mfile MARGIN RELATIVE SHADOW COLOR SCHEME 4
+DEFINE BAR 1 OF _mfile PROMPT "\<Cerrar"
+DEFINE BAR 2 OF _mfile PROMPT "\-"
+DEFINE BAR 3 OF _mfile PROMPT "\<Salir" ;
+	MESSAGE "Sale de la Aplicacion"
+ON SELECTION BAR 1 OF _mfile goApp.ReleaseForm
+ON SELECTION BAR 3 OF _mfile goApp.Release
+
+DEFINE POPUP movimiento MARGIN RELATIVE SHADOW COLOR SCHEME 4
+DEFINE BAR 1 OF movimiento PROMPT "Ventas" ;
+	SKIP FOR FunMenuAcc("MovVta")
+DEFINE BAR 2 OF movimiento PROMPT "\-"
+DEFINE BAR 3 OF movimiento PROMPT "Compras" ;
+	SKIP FOR FunMenuAcc("MovCpa")
+DEFINE BAR 4 OF movimiento PROMPT "\-"
+DEFINE BAR 5 OF movimiento PROMPT "Almacen" ;
+	SKIP FOR FunMenuAcc("MovAlm")
+DEFINE BAR 6 OF movimiento PROMPT "\-"
+DEFINE BAR 7 OF movimiento PROMPT "Bancos" ;
+	SKIP FOR FunMenuAcc("MovBco")
+ON BAR 1 OF movimiento ACTIVATE POPUP _0mq0qgn6z
+ON BAR 3 OF movimiento ACTIVATE POPUP compras
+ON SELECTION BAR 5 OF movimiento Do form frmMov_GuiAlm_Per
+ON BAR 7 OF movimiento ACTIVATE POPUP bancos
+
+DEFINE POPUP _0mq0qgn6z MARGIN RELATIVE SHADOW COLOR SCHEME 4
+DEFINE BAR 1 OF _0mq0qgn6z PROMPT "Orden de Venta" ;
+	SKIP FOR FunMenuAcc("MovVtaPed")
+DEFINE BAR 2 OF _0mq0qgn6z PROMPT "\-"
+DEFINE BAR 3 OF _0mq0qgn6z PROMPT "Registro de Ventas"
+DEFINE BAR 4 OF _0mq0qgn6z PROMPT "\-"
+DEFINE BAR 5 OF _0mq0qgn6z PROMPT "Guias de Remision" ;
+	SKIP FOR FunMenuAcc("MovVtaGuiRem")
+DEFINE BAR 6 OF _0mq0qgn6z PROMPT "Facturas" ;
+	SKIP FOR FunMenuAcc("MovVtaFac")
+DEFINE BAR 7 OF _0mq0qgn6z PROMPT "Boletas de Venta" ;
+	SKIP FOR FunMenuAcc("MovVtaBolVta")
+DEFINE BAR 8 OF _0mq0qgn6z PROMPT "Notas de Credito" ;
+	SKIP FOR FunMenuAcc("MovVtaNotCre")
+DEFINE BAR 9 OF _0mq0qgn6z PROMPT "Notas de Debito" ;
+	SKIP FOR FunMenuAcc("MovVtaNotDeb")
+DEFINE BAR 10 OF _0mq0qgn6z PROMPT "\-"
+DEFINE BAR 11 OF _0mq0qgn6z PROMPT "Letras" ;
+	SKIP FOR FunMenuAcc("MovVtaLet")
+DEFINE BAR 12 OF _0mq0qgn6z PROMPT "\-"
+DEFINE BAR 13 OF _0mq0qgn6z PROMPT "Registro de Precios de Articulos" ;
+	SKIP FOR FunMenuAcc("MovVtaRegPre")
+DEFINE BAR 14 OF _0mq0qgn6z PROMPT "Consulta Articulos" ;
+	SKIP FOR FunMenuAcc("MovVtaConArt")
+ON SELECTION BAR 1 OF _0mq0qgn6z Do form frmMovPed
+ON SELECTION BAR 3 OF _0mq0qgn6z Do form frmmov_doc_per with "1"
+ON SELECTION BAR 5 OF _0mq0qgn6z Do form frmMov_GuiRem WITH 2,"I",0,0
+ON SELECTION BAR 6 OF _0mq0qgn6z Do form frmMov_Fac WITH 2,"I",0,0,"01"
+ON SELECTION BAR 7 OF _0mq0qgn6z Do form frmMov_Fac WITH 2,"I",0,0,"03"
+ON SELECTION BAR 8 OF _0mq0qgn6z Do form frmMov_Fac WITH 2,"I",0,0,"07"
+ON SELECTION BAR 9 OF _0mq0qgn6z Do form frmMov_Fac WITH 2,"I",0,0,"08"
+ON BAR 11 OF _0mq0qgn6z ACTIVATE POPUP letras
+ON SELECTION BAR 13 OF _0mq0qgn6z Do form frmBusArtPre
+ON SELECTION BAR 14 OF _0mq0qgn6z Do form frmBusArtSal WITH "001"
+
+DEFINE POPUP letras MARGIN RELATIVE SHADOW COLOR SCHEME 4
+DEFINE BAR 1 OF letras PROMPT "Registro de Letras" ;
+	SKIP FOR FunMenuAcc("MovVtaLetReg")
+DEFINE BAR 2 OF letras PROMPT "Canje de Letras" ;
+	SKIP FOR FunMenuAcc("MovVtaLetCje")
+ON SELECTION BAR 1 OF letras Do form frmMov_Let_Per WITH "1"
+ON SELECTION BAR 2 OF letras Do form frmMov_LetCan_Per WITH "1"
+
+DEFINE POPUP compras MARGIN RELATIVE SHADOW COLOR SCHEME 4
+DEFINE BAR 1 OF compras PROMPT "Ordenes de Compra" ;
+	SKIP FOR FunMenuAcc("MovCpaOrdCom")
+DEFINE BAR 2 OF compras PROMPT "Registro de Compras/Gastos por Mes" ;
+	SKIP FOR FunMenuAcc("MovCpaDocPgo")
+DEFINE BAR 3 OF compras PROMPT "Letras" ;
+	SKIP FOR FunMenuAcc("MovCpaLet")
+ON SELECTION BAR 1 OF compras Do form frmMov_OrdCom WITH 2,"I",0,0
+ON SELECTION BAR 2 OF compras Do form frmmov_doc_per with "2"
+ON BAR 3 OF compras ACTIVATE POPUP _0o417044e
+
+DEFINE POPUP _0o417044e MARGIN RELATIVE SHADOW COLOR SCHEME 4
+DEFINE BAR 1 OF _0o417044e PROMPT "Registro de Letras" ;
+	SKIP FOR FunMenuAcc("MovCpaLetReg")
+DEFINE BAR 2 OF _0o417044e PROMPT "Canje de Letras" ;
+	SKIP FOR FunMenuAcc("MovCpaLetCje")
+ON SELECTION BAR 1 OF _0o417044e Do form frmMov_Let_Per WITH "2"
+ON SELECTION BAR 2 OF _0o417044e Do form frmMov_LetCan_Per WITH "2"
+
+DEFINE POPUP bancos MARGIN RELATIVE SHADOW COLOR SCHEME 4
+DEFINE BAR 1 OF bancos PROMPT "Registro de Bancos"
+DEFINE BAR 2 OF bancos PROMPT "Vouchers" ;
+	SKIP FOR FunMenuAcc("MovBcoVou")
+DEFINE BAR 3 OF bancos PROMPT "Recibos (Ingreso/Egreso)" ;
+	SKIP FOR FunMenuAcc("MovBcoRcb")
+DEFINE BAR 4 OF bancos PROMPT "Liquidaciones (Rendiciones de Cuenta)" ;
+	SKIP FOR FunMenuAcc("MovBcoLiq")
+DEFINE BAR 5 OF bancos PROMPT "Conciliacion Bancaria" ;
+	SKIP FOR FunMenuAcc("MovBcoCcc")
+DEFINE BAR 6 OF bancos PROMPT "Cheques en cartera" ;
+	SKIP FOR FunMenuAcc("MovBcoChqCar")
+DEFINE BAR 7 OF bancos PROMPT "\-"
+DEFINE BAR 8 OF bancos PROMPT "Comprovantes de Retencion" ;
+	SKIP FOR FunMenuAcc("MovBcoComRet")
+ON SELECTION BAR 1 OF bancos Do form frmMov_Bco_Per
+ON SELECTION BAR 2 OF bancos Do form frmMovBco
+ON BAR 3 OF bancos ACTIVATE POPUP recibosing
+ON SELECTION BAR 4 OF bancos Do form frmMovLiq
+ON BAR 5 OF bancos ACTIVATE POPUP conciliaci
+ON SELECTION BAR 6 OF bancos Do form frmMovBcoCar
+ON SELECTION BAR 8 OF bancos Do form frmMovComRet
+
+DEFINE POPUP recibosing MARGIN RELATIVE SHADOW COLOR SCHEME 4
+DEFINE BAR 1 OF recibosing PROMPT "INGRESOS" ;
+	SKIP FOR FunMenuAcc("MovBcoRcbIng")
+DEFINE BAR 2 OF recibosing PROMPT "EGRESOS" ;
+	SKIP FOR FunMenuAcc("MovBcoRcbEgr")
+ON SELECTION BAR 1 OF recibosing Do form frmMovRcb WITH  "1","RI"
+ON SELECTION BAR 2 OF recibosing Do form frmMovRcb WITH "2","RE"
+
+DEFINE POPUP conciliaci MARGIN RELATIVE SHADOW COLOR SCHEME 4
+DEFINE BAR 1 OF conciliaci PROMPT "Registro de Extracto Bancario"
+DEFINE BAR 2 OF conciliaci PROMPT "Cierre Conciliacion"
+ON SELECTION BAR 1 OF conciliaci Do form frmMovCccExt
+ON SELECTION BAR 2 OF conciliaci Do form frmPcsCieCcc
+
+DEFINE POPUP reportesco MARGIN RELATIVE SHADOW COLOR SCHEME 4
+DEFINE BAR 1 OF reportesco PROMPT "Ventas" ;
+	SKIP FOR FunMenuAcc("RepVta")
+DEFINE BAR 2 OF reportesco PROMPT "\-"
+DEFINE BAR 3 OF reportesco PROMPT "Compras" ;
+	SKIP FOR FunMenuAcc("RepCpa")
+DEFINE BAR 4 OF reportesco PROMPT "\-"
+DEFINE BAR 5 OF reportesco PROMPT "Almacen" ;
+	SKIP FOR FunMenuAcc("RepAlm")
+DEFINE BAR 6 OF reportesco PROMPT "\-"
+DEFINE BAR 7 OF reportesco PROMPT "Bancos" ;
+	SKIP FOR FunMenuAcc("RepBco")
+DEFINE BAR 8 OF reportesco PROMPT "\-"
+DEFINE BAR 9 OF reportesco PROMPT "Parametros" ;
+	SKIP FOR FunMenuAcc("RepPar")
+ON BAR 1 OF reportesco ACTIVATE POPUP ventas
+ON BAR 3 OF reportesco ACTIVATE POPUP _0nx17jdaj
+ON BAR 5 OF reportesco ACTIVATE POPUP _0mp0rjkzl
+ON BAR 7 OF reportesco ACTIVATE POPUP _0rz0p30y4
+ON BAR 9 OF reportesco ACTIVATE POPUP _18t1717hd
+
+DEFINE POPUP ventas MARGIN RELATIVE SHADOW COLOR SCHEME 4
+DEFINE BAR 1 OF ventas PROMPT "Registro de Ventas" ;
+	SKIP FOR FunMenuAcc("RepVtaRegVta")
+DEFINE BAR 2 OF ventas PROMPT "Ventas por Cliente" ;
+	SKIP FOR FunMenuAcc("RepVtaVtaCli")
+DEFINE BAR 3 OF ventas PROMPT "Ventas por Vendedor" ;
+	SKIP FOR FunMenuAcc("RepVtaVtaVdd")
+DEFINE BAR 4 OF ventas PROMPT "Ventas por Dia" ;
+	SKIP FOR FunMenuAcc("RepVtaVtaDia")
+DEFINE BAR 5 OF ventas PROMPT "Ventas por tipo de Venta" ;
+	SKIP FOR FunMenuAcc("RepVtaTipVta")
+DEFINE BAR 6 OF ventas PROMPT "\-"
+DEFINE BAR 7 OF ventas PROMPT "Ventas por Articulo"
+DEFINE BAR 8 OF ventas PROMPT "Ventas por Cliente Articulos"
+DEFINE BAR 9 OF ventas PROMPT "Ventas por Cliente Documentos"
+DEFINE BAR 10 OF ventas PROMPT "\-"
+DEFINE BAR 11 OF ventas PROMPT "Pedidos"
+DEFINE BAR 12 OF ventas PROMPT "Pedidos Atendidos"
+DEFINE BAR 13 OF ventas PROMPT "Pedidos Facturados"
+DEFINE BAR 14 OF ventas PROMPT "Registro de Guias de Remision" ;
+	SKIP FOR FunMenuAcc("RepVtaRegGui")
+DEFINE BAR 15 OF ventas PROMPT "\-"
+DEFINE BAR 16 OF ventas PROMPT "Venta Anual por Articulos"
+DEFINE BAR 17 OF ventas PROMPT "Venta Anual por Articluo/Cliente"
+DEFINE BAR 18 OF ventas PROMPT "Venta Anual por Cliente"
+DEFINE BAR 19 OF ventas PROMPT "Venta Anual por Cliente/Articulos"
+DEFINE BAR 20 OF ventas PROMPT "\-"
+DEFINE BAR 21 OF ventas PROMPT "Documentos por Cobrar por Periodo"
+DEFINE BAR 22 OF ventas PROMPT "Cuenta Corriente" ;
+	SKIP FOR FunMenuAcc("RepVtaCtaCte")
+DEFINE BAR 23 OF ventas PROMPT "Documentos Segun Vencimiento" ;
+	SKIP FOR FunMenuAcc("RepVtaDocVen")
+DEFINE BAR 24 OF ventas PROMPT "Antiguedad de la Deuda" ;
+	SKIP FOR FunMenuAcc("RepVtaDocAnt")
+DEFINE BAR 25 OF ventas PROMPT "\-"
+DEFINE BAR 26 OF ventas PROMPT "Registro de Letras" ;
+	SKIP FOR FunMenuAcc("RepVtaRegLet")
+DEFINE BAR 27 OF ventas PROMPT "Letras Segun Vencimiento" ;
+	SKIP FOR FunMenuAcc("RepVtaLetVen")
+DEFINE BAR 28 OF ventas PROMPT "Posicion de Letras" ;
+	SKIP FOR FunMenuAcc("RepVtaPosLet")
+DEFINE BAR 29 OF ventas PROMPT "\-"
+DEFINE BAR 30 OF ventas PROMPT "Registro de Auxiliares" ;
+	SKIP FOR FunMenuAcc("RepVtaRegAux")
+DEFINE BAR 31 OF ventas PROMPT "Clientes por Vendedor" ;
+	SKIP FOR FunMenuAcc("RepVtaCliVdd")
+DEFINE BAR 32 OF ventas PROMPT "Lista de Precios" ;
+	SKIP FOR FunMenuAcc("RepVtaArtPre")
+ON SELECTION BAR 1 OF ventas Do form frmRepRegVta
+ON SELECTION BAR 2 OF ventas Do form frmRepVtaCli WITH "1"
+ON SELECTION BAR 3 OF ventas Do form frmRepVtaVdd
+ON SELECTION BAR 4 OF ventas Do form frmRepVtaDia
+ON SELECTION BAR 5 OF ventas Do form frmRepVtaTipVta
+ON SELECTION BAR 7 OF ventas Do form frmRepVta_Art
+ON SELECTION BAR 8 OF ventas Do form frmRepCpa_Pvd_Art WITH "1"
+ON SELECTION BAR 9 OF ventas Do form frmRepCpa_Pvd_Doc WITH "1"
+ON SELECTION BAR 11 OF ventas Do form frmRepVtaPedMar
+ON SELECTION BAR 12 OF ventas Do form frmRepVtaPedDes
+ON SELECTION BAR 13 OF ventas Do form frmRepVtaPedFac
+ON SELECTION BAR 14 OF ventas Do form frmRepRegGuiRem
+ON SELECTION BAR 16 OF ventas Do form frmRep_Ano_Art WITH "1"
+ON SELECTION BAR 17 OF ventas Do form frmRep_Ano_ArtAux WITH "1"
+ON SELECTION BAR 18 OF ventas Do form frmRep_Ano_Aux WITH "1"
+ON SELECTION BAR 19 OF ventas Do form frmRep_Ano_AuxArt WITH "1"
+ON SELECTION BAR 21 OF ventas Do form frmCon_Doc_Per WITH "1"
+ON SELECTION BAR 22 OF ventas Do form frmRepCtaCte WITH "1"
+ON SELECTION BAR 23 OF ventas Do form frmRepDocVen WITH "1"
+ON SELECTION BAR 24 OF ventas Do form frmRepDocVenAnt WITH "1"
+ON SELECTION BAR 26 OF ventas Do form frmRepRegLet WITH "1"
+ON SELECTION BAR 27 OF ventas Do form frmRepLetVen WITH "1"
+ON SELECTION BAR 28 OF ventas Do form frmRepLetPos WITH "1"
+ON SELECTION BAR 30 OF ventas Do form frmRepRegAux
+ON SELECTION BAR 31 OF ventas Do form frmRepVddCli
+ON SELECTION BAR 32 OF ventas Do form frmRepArtPre
+
+DEFINE POPUP _0nx17jdaj MARGIN RELATIVE SHADOW COLOR SCHEME 4
+DEFINE BAR 1 OF _0nx17jdaj PROMPT "Registro de Compras" ;
+	SKIP FOR FunMenuAcc("RepCpaRegCpa")
+DEFINE BAR 2 OF _0nx17jdaj PROMPT "Registro de Retenciones" ;
+	SKIP FOR FunMenuAcc("RepCpaRegRet")
+DEFINE BAR 3 OF _0nx17jdaj PROMPT "Registro de Letras" ;
+	SKIP FOR FunMenuAcc("RepCpaRegLet")
+DEFINE BAR 4 OF _0nx17jdaj PROMPT "\-"
+DEFINE BAR 5 OF _0nx17jdaj PROMPT "Compras por Proveedor"
+DEFINE BAR 6 OF _0nx17jdaj PROMPT "Compras por Proveedor Articulos"
+DEFINE BAR 7 OF _0nx17jdaj PROMPT "Compras por Proveedor Documentos"
+DEFINE BAR 8 OF _0nx17jdaj PROMPT "\-"
+DEFINE BAR 9 OF _0nx17jdaj PROMPT "Gastos por Periodo"
+DEFINE BAR 10 OF _0nx17jdaj PROMPT "\-"
+DEFINE BAR 11 OF _0nx17jdaj PROMPT "Documentos por Pagar por Periodo"
+DEFINE BAR 12 OF _0nx17jdaj PROMPT "Cuenta Corriente" ;
+	SKIP FOR FunMenuAcc("RepCpaCtaCte")
+DEFINE BAR 13 OF _0nx17jdaj PROMPT "Documentos Segun Vencimiento" ;
+	SKIP FOR FunMenuAcc("RepCpaDocVen")
+DEFINE BAR 14 OF _0nx17jdaj PROMPT "Antiguedad de la Deuda" ;
+	SKIP FOR FunMenuAcc("RepCpaDocAnt")
+DEFINE BAR 15 OF _0nx17jdaj PROMPT "\-"
+DEFINE BAR 16 OF _0nx17jdaj PROMPT "Letras Segun Vencimiento" ;
+	SKIP FOR FunMenuAcc("RepCpaLetVen")
+DEFINE BAR 17 OF _0nx17jdaj PROMPT "Posicion de Letras" ;
+	SKIP FOR FunMenuAcc("RepCpaPosLet")
+DEFINE BAR 18 OF _0nx17jdaj PROMPT "\-"
+DEFINE BAR 19 OF _0nx17jdaj PROMPT "Compra Anual por Articulos"
+DEFINE BAR 20 OF _0nx17jdaj PROMPT "Compra Anual por Articulo/Proveedor"
+DEFINE BAR 21 OF _0nx17jdaj PROMPT "Compra Anual por Proveedor"
+DEFINE BAR 22 OF _0nx17jdaj PROMPT "Compras Anual por Proveedor/Articulos"
+DEFINE BAR 23 OF _0nx17jdaj PROMPT "\-"
+DEFINE BAR 24 OF _0nx17jdaj PROMPT "Certificado de Retenciones"
+ON SELECTION BAR 1 OF _0nx17jdaj Do form frmRepRegCom
+ON SELECTION BAR 2 OF _0nx17jdaj Do form frmRepRegRet
+ON SELECTION BAR 3 OF _0nx17jdaj Do form frmRepRegLet WITH "2"
+ON SELECTION BAR 5 OF _0nx17jdaj Do form frmRepVtaCli WITH "2"
+ON SELECTION BAR 6 OF _0nx17jdaj Do form frmRepCpa_Pvd_art WITH "2"
+ON SELECTION BAR 7 OF _0nx17jdaj Do form frmRepCpa_Pvd_Doc WITH "2"
+ON SELECTION BAR 9 OF _0nx17jdaj Do form frmRepComCto
+ON SELECTION BAR 11 OF _0nx17jdaj Do form frmCon_Doc_Per WITH "2"
+ON SELECTION BAR 12 OF _0nx17jdaj Do form frmRepCtaCte WITH "2"
+ON SELECTION BAR 13 OF _0nx17jdaj Do form frmRepDocVen WITH "2"
+ON SELECTION BAR 14 OF _0nx17jdaj Do form frmRepDocVen WITH "2"
+ON SELECTION BAR 16 OF _0nx17jdaj Do form frmRepLetVen WITH "2"
+ON SELECTION BAR 17 OF _0nx17jdaj Do form frmRepLetPos WITH "2"
+ON SELECTION BAR 19 OF _0nx17jdaj Do form frmRep_Ano_Art WITH "2"
+ON SELECTION BAR 20 OF _0nx17jdaj Do form frmRep_Ano_ArtAux WITH "2"
+ON SELECTION BAR 21 OF _0nx17jdaj Do form frmRep_Ano_Aux WITH "2"
+ON SELECTION BAR 22 OF _0nx17jdaj Do form frmRep_Ano_AuxArt WITH "2"
+ON SELECTION BAR 24 OF _0nx17jdaj Do form frmrepcerret
+
+DEFINE POPUP _0mp0rjkzl MARGIN RELATIVE SHADOW COLOR SCHEME 4
+DEFINE BAR 1 OF _0mp0rjkzl PROMPT "Consulta Articulo/Serie"
+DEFINE BAR 2 OF _0mp0rjkzl PROMPT "\"
+DEFINE BAR 3 OF _0mp0rjkzl PROMPT "Consulta Stock Actual"
+DEFINE BAR 4 OF _0mp0rjkzl PROMPT "Stock Actual"
+DEFINE BAR 5 OF _0mp0rjkzl PROMPT "Stock por Fecha"
+DEFINE BAR 6 OF _0mp0rjkzl PROMPT "Stock Valorizado por  Periodo"
+DEFINE BAR 7 OF _0mp0rjkzl PROMPT "\-"
+DEFINE BAR 8 OF _0mp0rjkzl PROMPT "Kardex"
+DEFINE BAR 9 OF _0mp0rjkzl PROMPT "Kardex Valorizado"
+DEFINE BAR 10 OF _0mp0rjkzl PROMPT "\-"
+DEFINE BAR 11 OF _0mp0rjkzl PROMPT "Compras por Auxiliar"
+DEFINE BAR 12 OF _0mp0rjkzl PROMPT "Movimientos de Articulos"
+DEFINE BAR 13 OF _0mp0rjkzl PROMPT "\-"
+DEFINE BAR 14 OF _0mp0rjkzl PROMPT "Utilidad"
+DEFINE BAR 15 OF _0mp0rjkzl PROMPT "\-"
+DEFINE BAR 16 OF _0mp0rjkzl PROMPT "Reposicion de Articulos"
+DEFINE BAR 17 OF _0mp0rjkzl PROMPT "Relacion de Articulos"
+DEFINE BAR 18 OF _0mp0rjkzl PROMPT "\"
+DEFINE BAR 19 OF _0mp0rjkzl PROMPT "Libros Contables"
+ON SELECTION BAR 1 OF _0mp0rjkzl Do form frmConMovArtSer
+ON SELECTION BAR 3 OF _0mp0rjkzl Do form frmcon_alm_sld_act WITH "V"
+ON SELECTION BAR 4 OF _0mp0rjkzl Do form frmRepAlmStock
+ON SELECTION BAR 5 OF _0mp0rjkzl Do form frmRepAlmStockFecha
+ON SELECTION BAR 6 OF _0mp0rjkzl Do form frmRepAlmStockPerVal
+ON SELECTION BAR 8 OF _0mp0rjkzl Do form frmRepAlmKardex
+ON SELECTION BAR 9 OF _0mp0rjkzl Do form frmRepAlmKdxVal
+ON SELECTION BAR 11 OF _0mp0rjkzl Do form frmRepAlmMovAux
+ON SELECTION BAR 12 OF _0mp0rjkzl Do form frmRepAlmMov
+ON SELECTION BAR 14 OF _0mp0rjkzl Do form frmRepAlmUtil
+ON SELECTION BAR 16 OF _0mp0rjkzl Do form frmRepAlmRep
+ON SELECTION BAR 17 OF _0mp0rjkzl Do form frmRepArtArt
+ON BAR 19 OF _0mp0rjkzl ACTIVATE POPUP libroscont
+
+DEFINE POPUP libroscont MARGIN RELATIVE SHADOW COLOR SCHEME 4
+DEFINE BAR 1 OF libroscont PROMPT "Inventario en Unidades Fisicas"
+DEFINE BAR 2 OF libroscont PROMPT "\-"
+DEFINE BAR 3 OF libroscont PROMPT "Inventario Valorizado"
+ON SELECTION BAR 1 OF libroscont Do form frmcon_alm_kdx_lib WITH "V"
+ON SELECTION BAR 3 OF libroscont Do form frmcon_alm_kdx_val_lib WITH "V"
+
+DEFINE POPUP _0rz0p30y4 MARGIN RELATIVE SHADOW COLOR SCHEME 4
+DEFINE BAR 1 OF _0rz0p30y4 PROMPT "Consulta Movimiento de Bancos" ;
+	SKIP FOR FunMenuAcc("RepBcoConMov")
+DEFINE BAR 2 OF _0rz0p30y4 PROMPT "Posicion de Bancos" ;
+	SKIP FOR FunMenuAcc("RepBcoPosBco")
+DEFINE BAR 3 OF _0rz0p30y4 PROMPT "Registro de Bancos" ;
+	SKIP FOR FunMenuAcc("RepBcoRegBco")
+DEFINE BAR 4 OF _0rz0p30y4 PROMPT "Registro de Cheques" ;
+	SKIP FOR FunMenuAcc("RepBcoRegChq")
+DEFINE BAR 5 OF _0rz0p30y4 PROMPT "\-"
+DEFINE BAR 6 OF _0rz0p30y4 PROMPT "Estado de Cuenta por Auxiliar" ;
+	SKIP FOR FunMenuAcc("RepBcoEstCtaAux")
+DEFINE BAR 7 OF _0rz0p30y4 PROMPT "Estado de Cuenta por Documento" ;
+	SKIP FOR FunMenuAcc("RepBcoEstCtaDoc")
+DEFINE BAR 8 OF _0rz0p30y4 PROMPT "Cobranzas por Cliente" ;
+	SKIP FOR FunMenuAcc("RepBcoCobCli")
+DEFINE BAR 9 OF _0rz0p30y4 PROMPT "\-"
+DEFINE BAR 10 OF _0rz0p30y4 PROMPT "Conceptos por Compras"
+DEFINE BAR 11 OF _0rz0p30y4 PROMPT "Conceptos por Recibos"
+DEFINE BAR 12 OF _0rz0p30y4 PROMPT "Recibos por Situacion"
+ON SELECTION BAR 1 OF _0rz0p30y4 Do form frmConBcoMov
+ON SELECTION BAR 2 OF _0rz0p30y4 Do form frmRepPosBco
+ON SELECTION BAR 3 OF _0rz0p30y4 Do form frmRepMovBco
+ON SELECTION BAR 4 OF _0rz0p30y4 Do form frmRepMovBcoChq
+ON SELECTION BAR 6 OF _0rz0p30y4 Do form frmRepEstCtaAux
+ON SELECTION BAR 7 OF _0rz0p30y4 Do form frmRepEstCtaDoc
+ON SELECTION BAR 8 OF _0rz0p30y4 Do form frmRepCobCli
+ON SELECTION BAR 10 OF _0rz0p30y4 Do form frmRepComCto
+ON SELECTION BAR 11 OF _0rz0p30y4 Do form frmRepRcbCto
+ON SELECTION BAR 12 OF _0rz0p30y4 Do form frmRepCtaCteRcb
+
+DEFINE POPUP _18t1717hd MARGIN RELATIVE SHADOW COLOR SCHEME 4
+DEFINE BAR 1 OF _18t1717hd PROMPT "Auxiliares"
+DEFINE BAR 2 OF _18t1717hd PROMPT "Plan de Cuentas"
+ON SELECTION BAR 1 OF _18t1717hd do form frmRepRegAux
+ON SELECTION BAR 2 OF _18t1717hd do form frmRepPlanCta
+
+DEFINE POPUP gestion MARGIN RELATIVE SHADOW COLOR SCHEME 4
+DEFINE BAR 1 OF gestion PROMPT "Estado de Ganancias y Persidas" ;
+	SKIP FOR FunMenuAcc("GesEgp")
+DEFINE BAR 2 OF gestion PROMPT "OV por Vendedor" ;
+	SKIP FOR FunMenuAcc("GesVdd")
+DEFINE BAR 3 OF gestion PROMPT "OV por Cliente" ;
+	SKIP FOR FunMenuAcc("GesPedCli")
+DEFINE BAR 4 OF gestion PROMPT "OV Correlativo" ;
+	SKIP FOR FunMenuAcc("GesPed")
+DEFINE BAR 5 OF gestion PROMPT "OV Detalle"
+DEFINE BAR 6 OF gestion PROMPT "OV por Marca Familia y SubFam" ;
+	SKIP FOR FunMenuAcc("GesPedMar")
+DEFINE BAR 7 OF gestion PROMPT "OV por Cliente Marca fam y SubFam" ;
+	SKIP FOR FunMenuAcc("GesPedCliMar")
+DEFINE BAR 8 OF gestion PROMPT "Margenes por Vendedor" ;
+	SKIP FOR FunMenuAcc("GesPedVdd")
+DEFINE BAR 9 OF gestion PROMPT "\-"
+DEFINE BAR 10 OF gestion PROMPT "Movimiento por Nro de Serie"
+DEFINE BAR 11 OF gestion PROMPT "Movimiento por Nro de Parte"
+DEFINE BAR 12 OF gestion PROMPT "\-"
+DEFINE BAR 13 OF gestion PROMPT "Documnetos por Cobrar" ;
+	SKIP FOR FunMenuAcc("GesDocCob")
+DEFINE BAR 14 OF gestion PROMPT "Documnetos por Pagar" ;
+	SKIP FOR FunMenuAcc("GesDocPgo")
+DEFINE BAR 15 OF gestion PROMPT "\-"
+DEFINE BAR 16 OF gestion PROMPT "Reporte Ordenes de Compra"
+ON SELECTION BAR 1 OF gestion Do form frmCon_Egp
+ON SELECTION BAR 2 OF gestion Do form frmCon_Ges_Vdd
+ON SELECTION BAR 3 OF gestion Do form frmCon_Ges_Ped_Cli
+ON SELECTION BAR 4 OF gestion Do form frmCon_Ges_Ped
+ON SELECTION BAR 5 OF gestion Do form frmCon_Ges_Ped_Det
+ON SELECTION BAR 6 OF gestion Do form frmCon_Ges_Ped_Mar
+ON SELECTION BAR 7 OF gestion Do form frmCon_Ges_Ped_Cli_Mar
+ON SELECTION BAR 8 OF gestion Do form frmCon_Ges_Ped_Vdd
+ON SELECTION BAR 10 OF gestion Do form frmCon_Ges_Ser
+ON SELECTION BAR 11 OF gestion Do form frmCon_Ges_Par
+ON SELECTION BAR 13 OF gestion Do form frmCon_Doc_Per WITH "1"
+ON SELECTION BAR 14 OF gestion Do form frmCon_Doc_Per WITH "2"
+ON SELECTION BAR 16 OF gestion Do form frmcon_ordcpa_doc with "I"
+
+DEFINE POPUP mantenimie MARGIN RELATIVE SHADOW COLOR SCHEME 4
+DEFINE BAR 1 OF mantenimie PROMPT "Parametros" ;
+	SKIP FOR FunMenuAcc("MntPar")
+DEFINE BAR 2 OF mantenimie PROMPT "Auxiliares" ;
+	SKIP FOR FunMenuAcc("MntAux")
+DEFINE BAR 3 OF mantenimie PROMPT "Articulos" ;
+	SKIP FOR FunMenuAcc("MntArt")
+DEFINE BAR 4 OF mantenimie PROMPT "Conceptos" ;
+	SKIP FOR FunMenuAcc("MntCto")
+DEFINE BAR 5 OF mantenimie PROMPT "Tipo de Cambio" ;
+	SKIP FOR FunMenuAcc("MntTipCam")
+DEFINE BAR 6 OF mantenimie PROMPT "\-"
+DEFINE BAR 7 OF mantenimie PROMPT "Tablas Equivalencia SUNAT" ;
+	SKIP FOR FunMenuAcc("MntTabRef")
+ON BAR 1 OF mantenimie ACTIVATE POPUP parametros
+ON BAR 2 OF mantenimie ACTIVATE POPUP auxiliares
+ON SELECTION BAR 3 OF mantenimie Do form frmMntArt
+ON SELECTION BAR 4 OF mantenimie Do form frmMntCto
+ON SELECTION BAR 5 OF mantenimie Do form frmMntCam
+ON BAR 7 OF mantenimie ACTIVATE POPUP _3520y60u1
+
+DEFINE POPUP parametros MARGIN RELATIVE SHADOW COLOR SCHEME 4
+DEFINE BAR 1 OF parametros PROMPT "Parametros Generales"
+DEFINE BAR 2 OF parametros PROMPT "\-"
+DEFINE BAR 3 OF parametros PROMPT "Tipos de Documentos"
+DEFINE BAR 4 OF parametros PROMPT "Documentos por Compra"
+DEFINE BAR 5 OF parametros PROMPT "Documentos por Bancos"
+DEFINE BAR 6 OF parametros PROMPT "Documentos por Letras"
+DEFINE BAR 7 OF parametros PROMPT "Secuencia de Documentos"
+DEFINE BAR 8 OF parametros PROMPT "\-"
+DEFINE BAR 9 OF parametros PROMPT "Tipos de Auxiliares"
+DEFINE BAR 10 OF parametros PROMPT "\-"
+DEFINE BAR 11 OF parametros PROMPT "Paises"
+DEFINE BAR 12 OF parametros PROMPT "Ciudades por Pais"
+DEFINE BAR 13 OF parametros PROMPT "Distritos por Ciudad"
+DEFINE BAR 14 OF parametros PROMPT "\-"
+DEFINE BAR 15 OF parametros PROMPT "Lineas de Articulos"
+DEFINE BAR 16 OF parametros PROMPT "Clases de Articulos"
+DEFINE BAR 17 OF parametros PROMPT "Marcas de Articulos"
+DEFINE BAR 18 OF parametros PROMPT "Modelos por Marca"
+DEFINE BAR 19 OF parametros PROMPT "Unidades de Articulos"
+DEFINE BAR 20 OF parametros PROMPT "Transacciones"
+DEFINE BAR 21 OF parametros PROMPT "Tipos de Articulos"
+DEFINE BAR 22 OF parametros PROMPT "\-"
+DEFINE BAR 23 OF parametros PROMPT "Codicion de Venta"
+DEFINE BAR 24 OF parametros PROMPT "Tipos de Ventas"
+DEFINE BAR 25 OF parametros PROMPT "Motivo del Traslado"
+DEFINE BAR 26 OF parametros PROMPT "\-"
+DEFINE BAR 27 OF parametros PROMPT "Bancos"
+DEFINE BAR 28 OF parametros PROMPT "Cuentas Bancarias"
+DEFINE BAR 29 OF parametros PROMPT "\-"
+DEFINE BAR 30 OF parametros PROMPT "Formatos de Impresion de Documnetos"
+ON SELECTION BAR 1 OF parametros Do form frmParGen
+ON SELECTION BAR 3 OF parametros Do form frmMntDoc
+ON SELECTION BAR 4 OF parametros Do form frmMntOpeDoc
+ON SELECTION BAR 5 OF parametros Do form frmMntOpeDocBco
+ON SELECTION BAR 6 OF parametros Do form frmMntLetOpeDoc
+ON SELECTION BAR 7 OF parametros Do form frmMntDocSec
+ON SELECTION BAR 9 OF parametros Do form frmMntTipAux
+ON SELECTION BAR 11 OF parametros Do form frmMntPais
+ON SELECTION BAR 12 OF parametros Do form frmMntPaisCdd
+ON SELECTION BAR 13 OF parametros Do form frmMntPaisCddDtt
+ON SELECTION BAR 15 OF parametros Do form frmMntArtLin
+ON SELECTION BAR 16 OF parametros Do form frmMntArtCla
+ON SELECTION BAR 17 OF parametros Do form frmMntMar
+ON SELECTION BAR 18 OF parametros Do form frmMntLinMarMod
+ON SELECTION BAR 19 OF parametros Do form frmMntUnd
+ON SELECTION BAR 20 OF parametros Do form frmMntTsc
+ON SELECTION BAR 21 OF parametros Do form frmmov_tab with "I","ArtTip","TipArt","DesTipArt","",1 TO lcRetorno
+ON SELECTION BAR 23 OF parametros Do form frmMntTipPgo
+ON SELECTION BAR 24 OF parametros Do form frmMntTipVta
+ON SELECTION BAR 25 OF parametros Do form frmMntTld
+ON SELECTION BAR 27 OF parametros Do form frmMntBco
+ON SELECTION BAR 28 OF parametros Do form frmMntBcoCta
+ON SELECTION BAR 30 OF parametros Do form frmMntFormato
+
+DEFINE POPUP auxiliares MARGIN RELATIVE SHADOW COLOR SCHEME 4
+DEFINE BAR 1 OF auxiliares PROMPT "Clientes"
+DEFINE BAR 2 OF auxiliares PROMPT "Proveedores"
+DEFINE BAR 3 OF auxiliares PROMPT "Personal"
+DEFINE BAR 4 OF auxiliares PROMPT "Vendedores"
+DEFINE BAR 5 OF auxiliares PROMPT "Transportistas"
+DEFINE BAR 6 OF auxiliares PROMPT "Empresas Grupo"
+DEFINE BAR 7 OF auxiliares PROMPT "Otros Auxiliares"
+ON SELECTION BAR 1 OF auxiliares Do form frmMntAuxCli
+ON SELECTION BAR 2 OF auxiliares Do form frmMntAuxPvd
+ON SELECTION BAR 3 OF auxiliares Do form frmMntAuxPer
+ON SELECTION BAR 4 OF auxiliares Do form frmMntAuxVdd
+ON SELECTION BAR 5 OF auxiliares Do form frmMntAuxTpt
+ON SELECTION BAR 7 OF auxiliares Do form frmMntAuxNew
+
+DEFINE POPUP _3520y60u1 MARGIN RELATIVE SHADOW COLOR SCHEME 4
+DEFINE BAR 1 OF _3520y60u1 PROMPT "Tipo de Articulos Existencias" ;
+	SKIP FOR FunMenuAcc("MntTabRefTipArt")
+DEFINE BAR 2 OF _3520y60u1 PROMPT "Codigos de Unidad" ;
+	SKIP FOR FunMenuAcc("MntTabRefUnd")
+DEFINE BAR 3 OF _3520y60u1 PROMPT "Monedas" ;
+	SKIP FOR FunMenuAcc("MntTabRefMnd")
+DEFINE BAR 4 OF _3520y60u1 PROMPT "Bancos Entidades Financieras" ;
+	SKIP FOR FunMenuAcc("MntTabRefBco")
+ON SELECTION BAR 1 OF _3520y60u1 Do form frmmov_tab_ref with "I","ArtTip","TipArt","DesTipArt","TipExi","TipExi","DesExi",1
+ON SELECTION BAR 2 OF _3520y60u1 Do form frmmov_tab_ref with "I","ArtUnd","CodUnd","DesUnd","LibUnd","LibUnd","LibDesUnd",1
+ON SELECTION BAR 3 OF _3520y60u1 Do form frmmov_tab_ref with "I","TipMnd","TipMnd","DesMnd","LibMnd","LibMnd","LibDesMnd",1
+ON SELECTION BAR 4 OF _3520y60u1 Do form frmmov_tab_ref with "I","TabBco","CodBco","DesBco","EntFin","CodEnt","DesEnt",1
+
+DEFINE POPUP procesos MARGIN RELATIVE SHADOW COLOR SCHEME 4
+DEFINE BAR 1 OF procesos PROMPT "Recalculo del Tipo de Cambio" ;
+	SKIP FOR FunMenuAcc("PcsRecTipCam")
+DEFINE BAR 2 OF procesos PROMPT "\-"
+DEFINE BAR 3 OF procesos PROMPT "Recalculo de Stock de Articulos" ;
+	SKIP FOR FunMenuAcc("PcsRecStockArt")
+DEFINE BAR 4 OF procesos PROMPT "Recalculo del Costo Promedio" ;
+	SKIP FOR FunMenuAcc("PcsRecCosPrm")
+DEFINE BAR 5 OF procesos PROMPT "Carga Saldos Iniciales Almacen" ;
+	SKIP FOR FunMenuAcc("PcsCgaSldIniAlm")
+DEFINE BAR 6 OF procesos PROMPT "\-"
+DEFINE BAR 7 OF procesos PROMPT "Recalculo Saldos de Bancos"
+DEFINE BAR 8 OF procesos PROMPT "\-"
+DEFINE BAR 9 OF procesos PROMPT "Genera Asientos Contables" ;
+	SKIP FOR FunMenuAcc("PcsGenAsto")
+DEFINE BAR 10 OF procesos PROMPT "Elimina Asientos Contables" ;
+	SKIP FOR FunMenuAcc("PcsEliAsto")
+ON SELECTION BAR 1 OF procesos Do form frmPcsRecTipCam
+ON SELECTION BAR 3 OF procesos Do form frmPcs_Alm_Rec_SldArt
+ON SELECTION BAR 4 OF procesos Do form frmPcs_Alm_Rec_CosPrm
+ON SELECTION BAR 5 OF procesos Do form frmPcs_Alm_Cga_SldIni
+ON SELECTION BAR 7 OF procesos Do form frmpcs_bco_rec_sld
+ON BAR 9 OF procesos ACTIVATE POPUP generaasie
+ON BAR 10 OF procesos ACTIVATE POPUP eliminaasi
+
+DEFINE POPUP generaasie MARGIN RELATIVE SHADOW COLOR SCHEME 4
+DEFINE BAR 1 OF generaasie PROMPT "Ventas"
+DEFINE BAR 2 OF generaasie PROMPT "Compras"
+DEFINE BAR 3 OF generaasie PROMPT "Bancos"
+DEFINE BAR 4 OF generaasie PROMPT "Liquidaciones"
+DEFINE BAR 5 OF generaasie PROMPT "Comprobante de Retencion"
+DEFINE BAR 6 OF generaasie PROMPT "Canje de Letras por Cobrar"
+DEFINE BAR 7 OF generaasie PROMPT "Canje de Letras por Pagar"
+ON SELECTION BAR 1 OF generaasie Do form frmPcs_GenAsto WITH "","02",0,"GenAstoVta","DocCab","1"
+ON SELECTION BAR 2 OF generaasie Do form frmPcs_GenAsto WITH "","03",0,"GenAstoCompra","DocCab","2"
+ON SELECTION BAR 3 OF generaasie Do form frmPcs_GenAsto WITH "","01",0,"GenAstoBco","BcoCab",""
+ON SELECTION BAR 4 OF generaasie Do form frmPcs_GenAsto WITH "","10",0,"GenAstoLiq","LiqCab",""
+ON SELECTION BAR 5 OF generaasie Do form frmPcs_GenAsto WITH "","40",0,"GenAstoComRet","RetCab",""
+ON SELECTION BAR 6 OF generaasie Do form frmPcs_GenAsto WITH "","08",0,"GenAstoLet","LetCanCab","1"
+ON SELECTION BAR 7 OF generaasie Do form frmPcs_GenAsto WITH "","09",0,"GenAstoLet","LetCanCab","2"
+
+DEFINE POPUP eliminaasi MARGIN RELATIVE SHADOW COLOR SCHEME 4
+DEFINE BAR 1 OF eliminaasi PROMPT "Ventas"
+DEFINE BAR 2 OF eliminaasi PROMPT "Compras"
+DEFINE BAR 3 OF eliminaasi PROMPT "Bancos"
+DEFINE BAR 4 OF eliminaasi PROMPT "Liquidaciones"
+DEFINE BAR 5 OF eliminaasi PROMPT "Comprobante de Retencion"
+DEFINE BAR 6 OF eliminaasi PROMPT "Canje de Letras por Cobrar"
+DEFINE BAR 7 OF eliminaasi PROMPT "Canje de Letras por Pagar"
+ON SELECTION BAR 1 OF eliminaasi Do form frmPcs_EliAsto WITH "","02",0,"DocCab","1"
+ON SELECTION BAR 2 OF eliminaasi Do form frmPcs_EliAsto WITH "","03",0,"DocCab","2"
+ON SELECTION BAR 3 OF eliminaasi Do form frmPcs_EliAsto WITH "","01",0,"BcoCab",""
+ON SELECTION BAR 4 OF eliminaasi Do form frmPcs_EliAsto WITH "","10",0,"LiqCab",""
+ON SELECTION BAR 5 OF eliminaasi Do form frmPcs_EliAsto WITH "","40",0,"RetCab",""
+ON SELECTION BAR 6 OF eliminaasi Do form frmPcs_EliAsto WITH "","08",0,"LetCanCab","1"
+ON SELECTION BAR 7 OF eliminaasi Do form frmPcs_EliAsto WITH "","09",0,"LetCanCab","2"
+
+DEFINE POPUP sunat MARGIN RELATIVE SHADOW COLOR SCHEME 4
+DEFINE BAR 1 OF sunat PROMPT "Operaciones que generan Ingresos" ;
+	SKIP FOR FunMenuAcc("SUNATOpeGenIng")
+DEFINE BAR 2 OF sunat PROMPT "Operaciones que generan Costos y/o Gastos" ;
+	SKIP FOR FunMenuAcc("SUNATOpeGenGto")
+DEFINE BAR 3 OF sunat PROMPT "Igv Renta Mensual (Ret. Trab. Indepe.)" ;
+	SKIP FOR FunMenuAcc("SUNATIgvRenMes")
+DEFINE BAR 4 OF sunat PROMPT "Comprobantes de Retencion" ;
+	SKIP FOR FunMenuAcc("SUNATComRet")
+ON SELECTION BAR 1 OF sunat Do form frmPcsPdtIng
+ON SELECTION BAR 2 OF sunat Do form frmPcsPdtCos
+ON SELECTION BAR 3 OF sunat Do form frmPcsPdtRet
+ON SELECTION BAR 4 OF sunat Do form frmPcsPdtComRet
+
+DEFINE POPUP utilitario MARGIN RELATIVE SHADOW COLOR SCHEME 4
+DEFINE BAR 1 OF utilitario PROMPT "Reorganizar Archivos" ;
+	SKIP FOR FunMenuAcc("UtilIndex")
+DEFINE BAR 2 OF utilitario PROMPT "Usuarios del Sistema" ;
+	SKIP FOR FunMenuAcc("UtilUsu")
+DEFINE BAR 3 OF utilitario PROMPT "Cambio de Password Especial" ;
+	SKIP FOR FunMenuAcc("UtilPassEsp")
+DEFINE BAR 4 OF utilitario PROMPT "Accesos por Usuario" ;
+	SKIP FOR FunMenuAcc("UtilAccEmp")
+DEFINE BAR 5 OF utilitario PROMPT "Accesos por Opciones" ;
+	SKIP FOR FunMenuAcc("UtilAccOpc")
+DEFINE BAR 6 OF utilitario PROMPT "Opciones del Sistema" ;
+	SKIP FOR FunMenuAcc("UtilMnuOpc")
+DEFINE BAR 7 OF utilitario PROMPT "Actualizar Tablas" ;
+	SKIP FOR FunMenuAcc("UtilActTab")
+DEFINE BAR 8 OF utilitario PROMPT "Actualizar Tablas Mas"
+ON SELECTION BAR 1 OF utilitario Do Indexa
+ON SELECTION BAR 2 OF utilitario Do form frmMntUsu
+ON SELECTION BAR 3 OF utilitario Do form frmCamPassEsp
+ON SELECTION BAR 4 OF utilitario Do form frmMntAcc
+ON SELECTION BAR 5 OF utilitario Do form frmMov_Acc_Opc
+ON SELECTION BAR 6 OF utilitario Do form frmMov_Mnu_Opc
+ON SELECTION BAR 7 OF utilitario Do AddTablas
+ON SELECTION BAR 8 OF utilitario Do Act_Unico
+
+DEFINE POPUP _mwindow MARGIN RELATIVE SHADOW COLOR SCHEME 4
+DEFINE BAR _mwi_rotat OF _mwindow PROMPT "\<Recorrer"
+
+DEFINE POPUP _msystem MARGIN RELATIVE SHADOW COLOR SCHEME 4
+DEFINE BAR 1 OF _msystem PROMPT "Cambio de Password"
+DEFINE BAR 2 OF _msystem PROMPT "\<Acerca de..."
+ON SELECTION BAR 1 OF _msystem Do form frmCamPass
+ON SELECTION BAR 2 OF _msystem goApp.DoForm("About.scx")

@@ -1,0 +1,101 @@
+*         1         2         3         4         5         6         7         8         9         0         1         2         3         4         5         6         7         8         9         0   
+*12345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890
+
+*FECHA      PEDIDO     ORD COMPRA ENTREGA    MND      IMPORTE  FACTURADO      SALDO   VENDEDOR                       ORD CLIENTE          
+*CLIENTE 1234567890123456789012345678901234567890 
+*12/12/1234 1234567890 1234567890 12/12/1234 123 9999,999.99 9999,999.99 9999,999.99  123456789012345678901234567890
+*	        FECHA      DOCUMENTO             MND       TOTAL   FACTURADO       SALDO
+*           12/12/1234 XX 123-1234567890     123 9999,999.99 9999,999.99 9999,999.99
+*           12/12/1234 XX 123-1234567890     123             9999,999.99
+*           12/12/1234 XX 123-1234567890     123             9999,999.99               
+
+PUBLIC lnPag, R
+LOCAL lcFile, lcProceso
+lcFile = "PedFac"
+lcProceso = "Rep_PedFac()"
+lnPag = 0
+R = 0
+Imprimetexto(lcFile,lcProceso)
+RETURN
+
+PROCEDURE REP_PedFac
+LOCAL lcNomAux,lcNroPed
+
+@0,0 SAY CHR(18)+CHR(15)
+
+STORE 0.00 TO lnTotPed,lnTotDoc
+
+TIT_PedFac()
+SELE TmpRep
+GO TOP 
+DO WHILE !EOF()
+	lcNomAux = NomAux
+	R = R + 1
+	@R,01 SAY "Cliente : "+NomAux
+	DO WHILE !EOF() AND NomAux = lcNomAux
+		lcNroPed = NroPed
+		R = R + 1
+		@R,01 SAY FecPed
+		@R,12 SAY PADR(NroPed,10)
+		@R,23 SAY PADR(OrdCom,10)
+		@R,34 SAY FecEnt
+		@R,45 SAY PADR(MndPed,3)
+		@R,49 SAY TotPed PICTURE "9999,999.99"
+		@R,61 SAY TotDoc PICTURE "9999,999.99"
+		@R,73 SAY (TotPed - TotDoc) PICTURE "9999,999.99"
+		@R,86 SAY PADR(Vendedor,30)
+		lnTotPed = lnTotPed + TotPed
+		lnTotDoc = lnTotDoc + TotDoc
+		R = R + 1
+		@R,12 SAY "FECHA"
+		@R,23 SAY "DOCUMENTO"
+		DO WHILE !EOF() AND NomAux = lcNomAux AND NroPed = lcNroPed
+			R = R + 1
+			IF R > 55
+				TIT_PedFac()
+				R = R + 1
+			ENDIF
+			@R,012 SAY FecDoc
+			@R,023 SAY TipDoc
+			@R,026 SAY TRANSFORM(NroDoc,"@R 999-9999999")
+			@R,045 SAY MndDoc
+			@R,061 SAY ImpDoc PICTURE "@Z 9999,999.99"
+			SKIP
+		ENDDO
+		R = R + 1
+	ENDDO
+ENDDO
+R = R + 1
+@04,001 SAY REPLICATE("=",132)
+R = R + 1
+@R,49 SAY lnTotPed PICTURE "9999,999.99"
+@R,61 SAY lnTotDoc PICTURE "9999,999.99"
+@R,73 SAY (lnTotPed - lnTotDoc) PICTURE "9999,999.99"
+RETURN
+
+PROCEDURE TIT_PedFac()
+lnPag =lnPag + 1
+IF lnPag > 1
+	@00,00 SAY ""
+ENDIF
+@01,001 SAY PADR(TabPar.NomEmp,40)
+@01,042 SAY PADC(pTitNom,76)
+@01,120 SAY DATE()
+@02,001 SAY PADR("RUC : "+TabPar.NroRuc,40)
+@02,042 SAY PADC(pTitRng,76)
+@02,120 SAY TIME()
+@03,042 SAY PADC(pTitMnd,76)
+@03,120 SAY lnPag PICTURE "@B 9999"
+@04,001 SAY REPLICATE("-",132)
+@05,001 SAY "FECHA"
+@05,012 SAY "PEDIDO"
+@05,023 SAY "ORD COMPRA"
+@05,034 SAY "ENTREGA"
+@05,045 SAY "Mnd"
+@05,049 SAY PADL("IMPORTE",11)
+@05,061 SAY PADL("FACTURADO",11)
+@05,073 SAY PADL("SALDO",11)
+@05,086 SAY "VENDEDOR"
+@06,001 SAY REPLICATE("-",130)
+R=7
+RETURN

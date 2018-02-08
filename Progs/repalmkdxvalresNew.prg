@@ -1,0 +1,91 @@
+*         1         2         3         4         5         6         7         8         9         0         1         2         3         4         5         6         7                                      
+*12345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789
+*1234567890  123456789012345678901234567890 123456789012345 12
+*Codigo     Descripcion                              UND      Inicio      Costo       Total     Ingreso       Total     Salida        Total       Saldo       Total      Costo
+*1234567890 1234567890123456789012345678901234567890 123 999,999.999 999.999999 9999,999.99 999,999.999 9999,999.99 999,999.999 9999,999.99 999,999.999 9999,999.99 999.999999
+
+PUBLIC lnPag, R
+LOCAL lcFile, lcProceso
+lcFile = "KdxValRes"
+lcProceso = "Rep_KdxRes()"
+lnPag = 0
+R = 0
+Imprimetexto(lcFile,lcProceso)
+RETURN
+
+PROCEDURE REP_KdxRes
+LOCAL lcCodArt, lnTotIni,lnTotIng,lnTotSal,lnTotSld
+
+@PROW(),PCOL() SAY CHR(27)+"C"+CHR(66) 
+@PROW(),PCOL() SAY CHR(18)+CHR(15)
+
+TIT_KdxRes()
+STORE 0 TO lnTotIni,lnTotIng,lnTotSal,lnTotSld
+SELE TmpRep
+DO WHILE !EOF()
+	R = R + 1
+	IF R > 55
+		TIT_KdxRes()
+		R = R + 1
+	ENDIF
+	@R,001 SAY PADR(CodArt,10)
+	@R,012 SAY PADR(DesArt,40)
+	@R,053 SAY PADR(CodUnd,3)
+	@R,057 SAY CanIni PICTURE "@Z 999,999.999"
+	@R,069 SAY ImpIni PICTURE "@Z 999.999999"
+	@R,080 SAY TotIni PICTURE "@Z 9999,999.99"
+	@R,092 SAY CanIng PICTURE "@Z 999,999.999"
+	@R,104 SAY TotIng PICTURE "@Z 9999,999.99"
+	@R,116 SAY CanSal PICTURE "@Z 999,999.999"
+	@R,128 SAY TotSal PICTURE "@Z 9999,999.99"
+	@R,140 SAY CanSld PICTURE "@Z 999,999.999"
+	@R,152 SAY TotSld PICTURE "9999,999.99"
+	@R,164 SAY ImpSld PICTURE "999.999999"
+	lnTotIni = lnTotIni + TotIni
+	lnTotIng = lnTotIng + TotIng
+	lnTotSal = lnTotSal + TotSal
+	lnTotSld = lnTotSld + TotSld
+	SKIP
+ENDDO
+R = R + 1
+@R,001 SAY REPLICATE("-",180)
+R = R + 1
+@R,012 SAY "TOTAL GENERAL"
+@R,080 SAY lnTotIni PICTURE "9999,999.99"
+@R,104 SAY lnTotIng PICTURE "9999,999.99"
+@R,128 SAY lnTotSal PICTURE "9999,999.99"
+@R,152 SAY lnTotSld PICTURE "9999,999.99"
+R = R + 1
+@R,001 SAY REPLICATE("-",180)
+RETURN
+
+PROCEDURE TIT_KdxRes()
+lnPag =lnPag + 1
+IF lnPag > 1
+	@00,00 SAY ""
+ENDIF
+@01,001 SAY PADR(TabPar.NomEmp,40)
+@01,042 SAY PADC(pTitNom,126)
+@01,170 SAY DATE()
+@02,001 SAY PADR("RUC : "+TabPar.NroRuc,40)
+@02,042 SAY PADC(pTitRng,126)
+@02,170 SAY TIME()
+@03,042 SAY PADC(pTitMnd,126)
+@03,170 SAY lnPag PICTURE "@B 9999"
+@04,001 SAY REPLICATE("-",180)
+@05,001 SAY "Codigo"
+@05,012 SAY "Descripcion"
+@05,053 SAY "UND"
+@05,057 SAY PADL("Inicio",11)
+@05,069 SAY PADL("Costo",11)
+@05,080 SAY PADL("Total",11)
+@05,092 SAY PADL("Ingreso",11)
+@05,104 SAY PADL("Total",11)
+@05,116 SAY PADL("Salida",11)
+@05,128 SAY PADL("Total",11)
+@05,140 SAY PADL("Saldo",11)
+@05,152 SAY PADL("Total",11)
+@05,164 SAY PADL("Costo",11)
+@06,001 SAY REPLICATE("-",180)
+R=7
+RETURN

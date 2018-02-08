@@ -1,0 +1,1326 @@
+IF MESSAGEBOX("Continuar Con el Proceso",4+32,"Reorganizacion de Archvos") = 7
+	RETURN
+ENDIF
+
+CLOSE TABLES
+SET SAFETY OFF
+*-
+*-------------------------------------
+*- ALMACEN
+*-------------------------------------
+IF !FILE_USE("ArtAlm","E")
+	IF MESSAGEBOX("Continuar Con el Proceso",4+32,"Reorganizacion de Archvos") = 7
+		RETURN
+	ENDIF
+ELSE
+WAIT WINDOW "Indexado ArtAlm" NOWAIT
+PACK
+INDEX ON CodAlm TAG CodAlm
+INDEX ON DesAlm TAG DesAlm
+USE
+ENDIF
+*-
+IF !FILE_USE("ArtArt","E")
+	IF MESSAGEBOX("Continuar Con el Proceso",4+32,"Reorganizacion de Archvos") = 7
+		RETURN
+	ENDIF
+ELSE
+WAIT WINDOW "Indexado ArtArt" NOWAIT
+DELETE FROM ArtArt WHERE EMPTY(CodArt) OR ISNULL(CodArt)
+PACK
+INDEX ON CodArt TAG CodArt
+INDEX ON DesArt TAG DesArt
+INDEX ON CodLin+CodCla+CodSec TAG CodLin
+INDEX ON CodPrv TAG CodPrv
+USE
+ENDIF
+*-
+IF !FILE_USE("ArtCla","E")
+	IF MESSAGEBOX("Continuar Con el Proceso",4+32,"Reorganizacion de Archvos") = 7
+		RETURN
+	ENDIF
+ELSE
+WAIT WINDOW "Indexado ArtCla" NOWAIT
+PACK
+INDEX ON CodLin+CodCla TAG CodCla
+INDEX ON CodLin+DesCla TAG DesCla
+USE
+ENDIF
+*-
+IF !FILE_USE("ArtLin","E")
+	IF MESSAGEBOX("Continuar Con el Proceso",4+32,"Reorganizacion de Archvos") = 7
+		RETURN
+	ENDIF
+ELSE
+WAIT WINDOW "Indexado ArtLin" NOWAIT
+PACK
+INDEX ON CodLin TAG CodLin
+INDEX ON DesLin TAG DesLin
+USE
+ENDIF
+*-
+IF !FILE_USE("ArtMovCab","E")
+	IF MESSAGEBOX("Continuar Con el Proceso",4+32,"Reorganizacion de Archvos") = 7
+		RETURN
+	ENDIF
+ELSE
+WAIT WINDOW "Indexado ArtMovCab" NOWAIT
+DELETE FROM ArtMovCab WHERE NROSEC = 0 OR EMPTY(NroSec) OR ISNULL(NROSEC)
+SELE ArtMovCab
+APPEND BLANK
+DELETE
+PACK
+ALTER TABLE ArtMovCab DROP PRIMARY KEY
+ALTER TABLE ArtMovCab ADD  PRIMARY KEY NroSec TAG NroSec 
+INDEX ON IndSit TAG IndSit
+INDEX ON codalm+periodo+tipmov+tiptsc TAG TipTsc
+INDEX ON tipdoc+nrodoc TAG NroDoc
+INDEX ON Periodo+codalm TAG Periodo
+INDEX ON ttod(fecDoc) TAG fecdoc
+INDEX ON tipdocref+STR(nrosecref,10) TAG SecRef
+INDEX ON tipOrd+STR(secOrd,10) TAG SecOrd
+USE
+ENDIF
+*-
+IF !FILE_USE("ArtMovDet","E")
+	IF MESSAGEBOX("Continuar Con el Proceso",4+32,"Reorganizacion de Archvos") = 7
+		RETURN
+	ENDIF
+ELSE
+WAIT WINDOW "Indexado ArtMovDet" NOWAIT
+PACK
+INDEX ON NroSec TAG NroSec
+INDEX ON TipDocRef+STR(NroSecRef,10) TAG SecRef
+INDEX ON TipOrd+STR(SecOrd,10) TAG SecOrd
+USE
+ENDIF
+*-
+IF !FILE_USE("ArtMovSer","E")
+	IF MESSAGEBOX("Continuar Con el Proceso",4+32,"Reorganizacion de Archvos") = 7
+		RETURN
+	ENDIF
+ELSE
+WAIT WINDOW "Indexado ArtMovSer" NOWAIT
+PACK
+INDEX ON STR(NroSec,10)+CodArt+SerArt TAG SerArt
+INDEX ON CodArt+SerArt TAG CodArt
+USE
+ENDIF
+*-
+IF !FILE_USE("ArtSer","E")
+	IF MESSAGEBOX("Continuar Con el Proceso",4+32,"Reorganizacion de Archvos") = 7
+		RETURN
+	ENDIF
+ELSE
+WAIT WINDOW "Indexado ArtSer" NOWAIT
+PACK
+INDEX ON CodArt+SerArt TAG CodArt
+INDEX ON SerArt TAG SerArt
+INDEX ON FecMov TAG FecMov
+INDEX ON IndSit TAG IndSit
+INDEX ON TipMov+TipTsc TAG TipTsc
+USE
+ENDIF
+*-
+IF !FILE_USE("ArtMovPer","E")
+	IF MESSAGEBOX("Continuar Con el Proceso",4+32,"Reorganizacion de Archvos") = 7
+		RETURN
+	ENDIF
+ELSE
+WAIT WINDOW "Indexado ArtMovPer" NOWAIT
+PACK
+INDEX ON codalm+periodo+tipmov+tiptsc TAG Periodo
+USE
+ENDIF
+*-
+IF !FILE_USE("ArtMovCos","E")
+	IF MESSAGEBOX("Continuar Con el Proceso",4+32,"Reorganizacion de Archvos") = 7
+		RETURN
+	ENDIF
+ELSE
+WAIT WINDOW "Indexado ArtMovCos" NOWAIT
+PACK
+INDEX ON periodo+codart+DTOS(fecdoc)+tipdoc+nrodoc TAG Periodo
+USE
+ENDIF
+*-
+IF !FILE_USE("ArtCos","E")
+	IF MESSAGEBOX("Continuar Con el Proceso",4+32,"Reorganizacion de Archvos") = 7
+		RETURN
+	ENDIF
+ELSE
+WAIT WINDOW "Indexado ArtCos" NOWAIT
+PACK
+INDEX ON codalm+periodo+codart TAG codart
+INDEX ON periodo+codart TAG periodo
+USE
+ENDIF
+*-
+IF !FILE_USE("ArtSld","E")
+	IF MESSAGEBOX("Continuar Con el Proceso",4+32,"Reorganizacion de Archvos") = 7
+		RETURN
+	ENDIF
+ELSE
+WAIT WINDOW "Indexado ArtSld" NOWAIT
+PACK
+INDEX ON codalm+codart TAG CodArt
+INDEX ON codart+codalm TAG codalm
+USE
+ENDIF
+*-
+IF !FILE_USE("ArtSldMes","E")
+	IF MESSAGEBOX("Continuar Con el Proceso",4+32,"Reorganizacion de Archvos") = 7
+		RETURN
+	ENDIF
+ELSE
+WAIT WINDOW "Indexado ArtSldMes" NOWAIT
+PACK
+INDEX ON codalm+codart+periodo TAG CodArt
+INDEX ON periodo+codalm+codart TAG Periodo
+USE
+ENDIF
+*-
+IF !FILE_USE("ArtTip","E")
+	IF MESSAGEBOX("Continuar Con el Proceso",4+32,"Reorganizacion de Archvos") = 7
+		RETURN
+	ENDIF
+ELSE
+WAIT WINDOW "Indexado ArtTip" NOWAIT
+PACK
+INDEX ON TipArt TAG TipArt
+INDEX ON DesTipArt TAG DesTipArt
+USE
+ENDIF
+*-
+IF !FILE_USE("ArtTsc","E")
+	IF MESSAGEBOX("Continuar Con el Proceso",4+32,"Reorganizacion de Archvos") = 7
+		RETURN
+	ENDIF
+ELSE
+WAIT WINDOW "Indexado ArtTsc" NOWAIT
+PACK
+INDEX ON TipMov+TipTsc TAG TipTsc
+INDEX ON TipMov+DesTsc TAG DesTsc
+USE
+ENDIF
+*-
+IF !FILE_USE("ArtUnd","E")
+	IF MESSAGEBOX("Continuar Con el Proceso",4+32,"Reorganizacion de Archvos") = 7
+		RETURN
+	ENDIF
+ELSE
+WAIT WINDOW "Indexado ArtUnd" NOWAIT
+PACK
+INDEX ON CodUnd TAG CodUnd
+INDEX ON DesUnd TAG DesUnd
+USE
+ENDIF
+*-
+IF !FILE_USE("ArtMar","E")
+	IF MESSAGEBOX("Continuar Con el Proceso",4+32,"Reorganizacion de Archvos") = 7
+		RETURN
+	ENDIF
+ELSE
+WAIT WINDOW "Indexado ArtMar" NOWAIT
+PACK
+INDEX ON CodMar TAG CodMar
+INDEX ON DesMar TAG DesMar
+USE
+ENDIF
+*-
+IF !FILE_USE("ArtMod","E")
+	IF MESSAGEBOX("Continuar Con el Proceso",4+32,"Reorganizacion de Archvos") = 7
+		RETURN
+	ENDIF
+ELSE
+WAIT WINDOW "Indexado ArtMod" NOWAIT
+PACK
+INDEX ON CodLin+CodMar+CodMod TAG CodMod
+INDEX ON CodLin+CodMar+DesMod TAG DesMod
+USE
+ENDIF
+
+*-
+*--------------------------------------
+* BANCOS
+*--------------------------------------
+IF !FILE_USE("BcoCab","E")
+	IF MESSAGEBOX("Continuar Con el Proceso",4+32,"Reorganizacion de Archvos") = 7
+		RETURN
+	ENDIF
+ELSE
+WAIT WINDOW "Indexado BcoCab " NOWAIT
+*DELETE FROM BcoCab WHERE NROSEC = 0 OR EMPTY(NroSec) OR ISNULL(NROSEC)
+*SELE BcoCab
+*APPEND BLANK
+*DELETE
+PACK
+ALTER TABLE BcoCab DROP PRIMARY KEY
+ALTER TABLE BcoCab ADD  PRIMARY KEY NroSec TAG NroSec 
+INDEX ON Periodo+TipCom+STR(NroCom,6) TAG NroCom
+INDEX ON CodBco+NroCta+TipDoc+NroDoc  TAG NroDoc
+INDEX ON CodBco+NroCta+DTOS(FecDoc)   TAG FecDoc
+INDEX ON Periodo TAG Periodo
+USE
+ENDIF
+*-
+IF !FILE_USE("BcoDet","E")
+	IF MESSAGEBOX("Continuar Con el Proceso",4+32,"Reorganizacion de Archvos") = 7
+		RETURN
+	ENDIF
+ELSE
+WAIT WINDOW "Indexado BcoDet " NOWAIT
+PACK
+INDEX ON NroSec TAG NroSec
+INDEX ON NroSecDet TAG NroSecDet
+INDEX ON TipAux+CodAux+TipDoc+NroDoc TAG NroDoc
+INDEX ON TipDoc+STR(NroSecDoc,10) TAG NroSecDoc
+INDEX ON NroOpe TAG NroOpe
+USE
+ENDIF
+*-
+IF !FILE_USE("BcoSld","E")
+	IF MESSAGEBOX("Continuar Con el Proceso",4+32,"Reorganizacion de Archvos") = 7
+		RETURN
+	ENDIF
+ELSE
+WAIT WINDOW "Indexado BcoSld" NOWAIT
+PACK
+INDEX ON CodBco+NroCta+Periodo TAG CodBco
+INDEX ON Periodo TAG Periodo
+USE
+ENDIF
+*-
+IF !FILE_USE("BcoCtaCte","E")
+	IF MESSAGEBOX("Continuar Con el Proceso",4+32,"Reorganizacion de Archvos") = 7
+		RETURN
+	ENDIF
+ELSE
+WAIT WINDOW "Indexado BcoCtaCte" NOWAIT
+PACK
+INDEX ON CodBco        TAG CodBco
+INDEX ON Codbco+NroCta TAG NroCta
+USE
+ENDIF
+*-
+IF !FILE_USE("BcoPer","E")
+	IF MESSAGEBOX("Continuar Con el Proceso",4+32,"Reorganizacion de Archvos") = 7
+		RETURN
+	ENDIF
+ELSE
+WAIT WINDOW "Indexado BcoPer" NOWAIT
+PACK
+INDEX ON Codbco+NroCta+Periodo TAG Periodo
+USE
+ENDIF
+*-
+IF !FILE_USE("BcoOpeDoc","E")
+	IF MESSAGEBOX("Continuar Con el Proceso",4+32,"Reorganizacion de Archvos") = 7
+		RETURN
+	ENDIF
+ELSE
+WAIT WINDOW "Indexado BcoOpeDoc" NOWAIT
+PACK
+INDEX ON TipOpe+TipDoc  TAG TipDoc
+USE
+ENDIF
+*-
+IF !FILE_USE("LiqCab","E")
+	IF MESSAGEBOX("Continuar Con el Proceso",4+32,"Reorganizacion de Archvos") = 7
+		RETURN
+	ENDIF
+ELSE
+WAIT WINDOW "Indexado LiqCab " NOWAIT
+DELETE FROM LiqCab WHERE NROSEC = 0 OR EMPTY(NroSec) OR ISNULL(NROSEC)
+SELE LiqCab
+APPEND BLANK
+DELETE
+PACK
+ALTER TABLE LiqCab DROP PRIMARY KEY
+ALTER TABLE LiqCab ADD  PRIMARY KEY NroSec TAG NroSec 
+INDEX ON Periodo+TipCom+STR(NroCom,6) TAG NroCom
+INDEX ON TipDoc+NroDoc  			  TAG NroDoc
+INDEX ON FecDoc						  TAG FecDoc
+USE
+ENDIF
+*-
+*---------------------------------------
+*- CAJA
+*---------------------------------------
+*-
+IF !FILE_USE("Caja","E")
+	IF MESSAGEBOX("Continuar Con el Proceso",4+32,"Reorganizacion de Archvos") = 7
+		RETURN
+	ENDIF
+ELSE
+WAIT WINDOW "Indexado Caja" NOWAIT
+PACK
+INDEX ON CodCaj TAG CodCaj
+INDEX ON DesCaj TAG DesCaj
+USE
+ENDIF
+*-
+IF !FILE_USE("CajCab","E")
+	IF MESSAGEBOX("Continuar Con el Proceso",4+32,"Reorganizacion de Archvos") = 7
+		RETURN
+	ENDIF
+ELSE
+WAIT WINDOW "Indexado CajCab" NOWAIT
+DELETE FROM CajCab WHERE NROSEC = 0 OR EMPTY(NroSec) OR ISNULL(NROSEC)
+PACK
+ALTER TABLE CajCab DROP PRIMARY KEY
+ALTER TABLE CajCab ADD  PRIMARY KEY NroSec TAG NroSec 
+INDEX ON IndSit TAG IndSit
+INDEX ON FecMov TAG FecMov
+INDEX ON codcaj+STR(nromov,7)  TAG NroMov
+USE
+ENDIF
+*-
+IF !FILE_USE("CajDet","E")
+	IF MESSAGEBOX("Continuar Con el Proceso",4+32,"Reorganizacion de Archvos") = 7
+		RETURN
+	ENDIF
+ELSE
+WAIT WINDOW "Indexado CajDet" NOWAIT
+PACK
+INDEX ON NroSec TAG NroSec
+INDEX ON TipAux+CodAux+TipDoc+NroDoc TAG NroDoc
+INDEX ON TipDoc+STR(NroSecDoc,10)    TAG NroSecDoc
+USE
+ENDIF
+*-
+*---------------------------------------------------
+*- CONCILIACION BANCARIA
+*---------------------------------------------------
+*-
+IF !FILE_USE("CccExt","E")
+	IF MESSAGEBOX("Continuar Con el Proceso",4+32,"Reorganizacion de Archvos") = 7
+		RETURN
+	ENDIF
+ELSE
+WAIT WINDOW "Indexado CccExt " NOWAIT
+DELETE FROM CccExt WHERE NROSEC = 0 OR EMPTY(NroSec) OR ISNULL(NROSEC)
+PACK
+ALTER TABLE CccExt DROP PRIMARY KEY
+ALTER TABLE CccExt ADD  PRIMARY KEY NroSec TAG NroSec 
+INDEX ON CodBco+NroCta+Periodo TAG Periodo
+INDEX ON CodBco+NroCta+TipDoc+NroDoc  TAG NroDoc
+INDEX ON SecDoc   TAG SecDoc
+USE
+ENDIF
+*-
+IF !FILE_USE("CccPen","E")
+	IF MESSAGEBOX("Continuar Con el Proceso",4+32,"Reorganizacion de Archvos") = 7
+		RETURN
+	ENDIF
+ELSE
+WAIT WINDOW "Indexado CccPen " NOWAIT
+DELETE FROM CccPen WHERE NROSEC = 0 OR EMPTY(NroSec) OR ISNULL(NROSEC)
+PACK
+ALTER TABLE CccPen DROP PRIMARY KEY
+ALTER TABLE CccPen ADD  PRIMARY KEY NroSec TAG NroSec 
+INDEX ON CodBco+NroCta+Periodo TAG Periodo
+INDEX ON CodBco+NroCta+TipDoc+NroDoc  TAG NroDoc
+INDEX ON SecDoc   TAG SecDoc
+USE
+ENDIF
+*-
+*---------------------------------------------------
+*- VENTAS / COMPRAS
+*---------------------------------------------------
+*-
+IF !FILE_USE("MovOpe","E")
+	IF MESSAGEBOX("Continuar Con el Proceso",4+32,"Reorganizacion de Archvos") = 7
+		RETURN
+	ENDIF
+ELSE
+WAIT WINDOW "Indexado MovOpe" NOWAIT
+DELETE FROM MovOpe WHERE NROSEC = 0 OR EMPTY(NroSec) OR ISNULL(NROSEC)
+PACK
+ALTER TABLE MovOpe DROP PRIMARY KEY
+ALTER TABLE MovOpe ADD  PRIMARY KEY NroSec TAG NroSec 
+INDEX ON NroOpe TAG NroOpe
+INDEX ON FecOpe TAG FecOpe
+USE
+ENDIF
+*-
+IF !FILE_USE("CotCab","E")
+	IF MESSAGEBOX("Continuar Con el Proceso",4+32,"Reorganizacion de Archvos") = 7
+		RETURN
+	ENDIF
+ELSE
+WAIT WINDOW "Indexado CotCab" NOWAIT
+DELETE FROM CotCab WHERE NROSEC = 0 OR EMPTY(NroSec) OR ISNULL(NROSEC)
+PACK
+ALTER TABLE CotCab DROP PRIMARY KEY
+ALTER TABLE CotCab ADD  PRIMARY KEY NroSec TAG NroSec 
+INDEX ON TipDoc+NroDoc  TAG NroDoc
+INDEX ON FecDoc  		TAG FecDoc
+INDEX ON IndSit         TAG IndSit
+USE
+ENDIF
+*-
+IF !FILE_USE("CotDet","E")
+	IF MESSAGEBOX("Continuar Con el Proceso",4+32,"Reorganizacion de Archvos") = 7
+		RETURN
+	ENDIF
+ELSE
+WAIT WINDOW "Indexado CotDet" NOWAIT
+PACK
+INDEX ON NroSec TAG NroSec
+INDEX ON CodArt TAG CodArt
+USE
+ENDIF
+*-
+IF !FILE_USE("DocCab","E")
+	IF MESSAGEBOX("Continuar Con el Proceso",4+32,"Reorganizacion de Archvos") = 7
+		RETURN
+	ENDIF
+ELSE
+WAIT WINDOW "Indexado DocCab" NOWAIT
+DELETE FROM DocCab WHERE NROSEC = 0 OR EMPTY(NroSec) OR ISNULL(NROSEC)
+SELE DocCab
+APPEND BLANK
+DELETE
+PACK
+ALTER TABLE DocCab DROP PRIMARY KEY
+ALTER TABLE DocCab ADD  PRIMARY KEY NroSec TAG NroSec 
+INDEX ON TipOpe+TipDoc+NroDoc         TAG NroDoc
+INDEX ON TipAux+CodAux+TipDoc+NroDoc  TAG CodAux
+INDEX ON IndSit                       TAG IndSit
+INDEX ON TipOpe+Periodo+TipCom+STR(NroCom,6) TAG Periodo
+INDEX ON FecDoc                       TAG FecDoc
+INDEX ON tipdocref+STR(nrosecref,10)  TAG NROREF
+USE
+ENDIF
+*-
+IF !FILE_USE("DocDet","E")
+	IF MESSAGEBOX("Continuar Con el Proceso",4+32,"Reorganizacion de Archvos") = 7
+		RETURN
+	ENDIF
+ELSE
+WAIT WINDOW "Indexado DocDet" NOWAIT
+DELETE FROM DocDet WHERE NROSEC = 0 OR EMPTY(NroSec) OR ISNULL(NROSEC)
+SELE DocDet
+APPEND BLANK
+DELETE
+PACK
+INDEX ON NroSec TAG NroSec
+INDEX ON tipdocref+NroDocRef TAg NRODocRef
+INDEX ON tipdocref+STR(nrosecref,10) TAg NROREF
+USE
+ENDIF
+*-
+IF !FILE_USE("DocImp","E")
+	IF MESSAGEBOX("Continuar Con el Proceso",4+32,"Reorganizacion de Archvos") = 7
+		RETURN
+	ENDIF
+ELSE
+WAIT WINDOW "Indexado DocImp" NOWAIT
+DELETE FROM DocImp WHERE NROSEC = 0 OR EMPTY(NroSec) OR ISNULL(NROSEC)
+PACK
+INDEX ON NroSec TAG NroSec
+USE
+ENDIF
+*-
+IF !FILE_USE("Formato","E")
+	IF MESSAGEBOX("Continuar Con el Proceso",4+32,"Reorganizacion de Archvos") = 7
+		RETURN
+	ENDIF
+ELSE
+WAIT WINDOW "Indexado Formato" NOWAIT
+PACK
+INDEX ON tipdoc+tipo+STR(orden,2) TAG Tipo
+USE
+ENDIF
+*-
+IF !FILE_USE("GuiCab","E")
+	IF MESSAGEBOX("Continuar Con el Proceso",4+32,"Reorganizacion de Archvos") = 7
+		RETURN
+	ENDIF
+ELSE
+WAIT WINDOW "Indexado GuiCab" NOWAIT
+DELETE FROM GuiCab WHERE NROSEC = 0 OR EMPTY(NroSec) OR ISNULL(NROSEC)
+SELE GuiCab
+APPEND BLANK
+DELETE
+PACK
+ALTER TABLE GuiCab DROP PRIMARY KEY
+ALTER TABLE GuiCab ADD  PRIMARY KEY NroSec TAG NroSec 
+INDEX ON TipDoc+NroDoc  TAG NroDoc
+INDEX ON IndSit         TAG IndSit
+INDEX ON FecDoc         TAG FecDoc
+INDEX ON TipDocRef+NroDocRef  TAG NroDocRef
+INDEX ON tipdocref+STR(nrosecref,10) TAG NROREF
+INDEX ON tipOrd+STR(secOrd,10) TAG SECORD
+USE
+ENDIF
+*-
+IF !FILE_USE("GuiDet","E")
+	IF MESSAGEBOX("Continuar Con el Proceso",4+32,"Reorganizacion de Archvos") = 7
+		RETURN
+	ENDIF
+ELSE
+WAIT WINDOW "Indexado GuiDet" NOWAIT
+DELETE FROM GuiDet WHERE NROSEC = 0 OR EMPTY(NroSec) OR ISNULL(NROSEC)
+SELE GuiDet
+APPEND BLANK
+DELETE
+PACK
+INDEX ON NroSec TAG NroSec
+INDEX ON tipdocref+NroDocRef TAg NRODocRef
+INDEX ON tipdocref+STR(nrosecref,10) TAg NROREF
+USE
+ENDIF
+*-
+IF !FILE_USE("GuiPqt","E")
+	IF MESSAGEBOX("Continuar Con el Proceso",4+32,"Reorganizacion de Archvos") = 7
+		RETURN
+	ENDIF
+ELSE
+WAIT WINDOW "Indexado GuiPqt" NOWAIT
+PACK
+INDEX ON codsec+codart TAG CodSec
+USE
+ENDIF
+*-
+IF !FILE_USE("PedCab","E")
+	IF MESSAGEBOX("Continuar Con el Proceso",4+32,"Reorganizacion de Archvos") = 7
+		RETURN
+	ENDIF
+ELSE
+WAIT WINDOW "Indexado PedCab" NOWAIT
+DELETE FROM PedCab WHERE NROSEC = 0 OR EMPTY(NroSec) OR ISNULL(NROSEC)
+SELE PedCab
+APPEND BLANK
+DELETE
+PACK
+ALTER TABLE PedCab DROP PRIMARY KEY
+ALTER TABLE PedCab ADD  PRIMARY KEY NroSec TAG NroSec 
+INDEX ON TipDoc+NroDoc  TAG NroDoc
+INDEX ON FecDoc  		TAG FecDoc
+INDEX ON IndSit         TAG IndSit
+INDEX ON OrdCom      	TAg OrdCom
+INDEX ON tipdocref+STR(nrosecref,10) TAg NROREF
+USE
+ENDIF
+*-
+IF !FILE_USE("PedDet","E")
+	IF MESSAGEBOX("Continuar Con el Proceso",4+32,"Reorganizacion de Archvos") = 7
+		RETURN
+	ENDIF
+ELSE
+WAIT WINDOW "Indexado PedDet" NOWAIT
+DELETE FROM PedDet WHERE NROSEC = 0 OR EMPTY(NroSec) OR ISNULL(NROSEC)
+SELE PedDet
+APPEND BLANK
+DELETE
+PACK
+INDEX ON NroSec TAG NroSec
+INDEX ON STR(nrosec,10)+codart TAG codart
+USE
+ENDIF
+*-
+IF !FILE_USE("OrdComCab","E")
+	IF MESSAGEBOX("Continuar Con el Proceso",4+32,"Reorganizacion de Archvos") = 7
+		RETURN
+	ENDIF
+ELSE
+WAIT WINDOW "Indexado OrdComCab" NOWAIT
+DELETE FROM OrdComCab WHERE NROSEC = 0 OR EMPTY(NroSec) OR ISNULL(NROSEC)
+SELE OrdComCab
+APPEND BLANK
+DELETE
+PACK
+ALTER TABLE OrdComCab DROP PRIMARY KEY
+ALTER TABLE OrdComCab ADD  PRIMARY KEY NroSec TAG NroSec 
+INDEX ON TipDoc+NroDoc  TAG NroDoc
+INDEX ON FecDoc  		TAG FecDoc
+INDEX ON IndSit         TAG IndSit
+INDEX ON nrosecref TAg nrosecref
+INDEX ON tipdocref+NroDocRef TAg NRODocRef
+INDEX ON tipdocref+STR(nrosecref,10) TAG NROREF
+USE
+ENDIF
+*-
+IF !FILE_USE("OrdComDet","E")
+	IF MESSAGEBOX("Continuar Con el Proceso",4+32,"Reorganizacion de Archvos") = 7
+		RETURN
+	ENDIF
+ELSE
+WAIT WINDOW "Indexado OrdComDet" NOWAIT
+DELETE FROM OrdComDet WHERE NROSEC = 0 OR EMPTY(NroSec) OR ISNULL(NROSEC)
+SELE OrdComDet
+APPEND BLANK
+DELETE
+PACK
+INDEX ON NroSec TAG NroSec
+INDEX ON nrosecref TAg nrosecref
+INDEX ON tipdocref+NroDocRef TAg NRODocRef
+INDEX ON tipdocref+STR(nrosecref,10) TAg NROREF
+USE
+ENDIF
+*-
+*--------------------------
+*- LETRAS
+*--------------------------
+IF !FILE_USE("LetCab","E")
+	IF MESSAGEBOX("Continuar Con el Proceso",4+32,"Reorganizacion de Archvos") = 7
+		RETURN
+	ENDIF
+ELSE
+WAIT WINDOW "Indexado LetCab " NOWAIT
+DELETE FROM LetCab WHERE NROSEC = 0 OR EMPTY(NroSec) OR ISNULL(NROSEC)
+PACK
+ALTER TABLE LetCab DROP PRIMARY KEY
+ALTER TABLE LetCab ADD  PRIMARY KEY NroSec TAG NroSec 
+INDEX ON TipOpe+TipDoc+NroDoc  		  TAG NroDoc
+INDEX ON TipAux+CodAux+TipDoc+NroDoc  TAG CodAux
+INDEX ON IndSit                       TAG IndSit
+INDEX ON FecDoc                       TAG FecDoc
+INDEX ON FecVen                       TAG FecVen
+INDEX ON tipope+periodo+tipcom+STR(nrocom,6) TAG Periodo
+USE
+ENDIF
+*-
+IF !FILE_USE("LetCanCab","E")
+	IF MESSAGEBOX("Continuar Con el Proceso",4+32,"Reorganizacion de Archvos") = 7
+		RETURN
+	ENDIF
+ELSE
+WAIT WINDOW "Indexado LetCanCab " NOWAIT
+DELETE FROM LetCanCab WHERE NROSEC = 0 OR EMPTY(NroSec) OR ISNULL(NROSEC)
+PACK
+ALTER TABLE LetCanCab DROP PRIMARY KEY
+ALTER TABLE LetCanCab ADD  PRIMARY KEY NroSec TAG NroSec 
+INDEX ON tipope+periodo+tipcom+STR(nrocom,6) TAG Periodo
+INDEX ON tipope+tipdoc+nrodoc TAG NroDoc
+USE
+ENDIF
+*-
+IF !FILE_USE("LetCanDet","E")
+	IF MESSAGEBOX("Continuar Con el Proceso",4+32,"Reorganizacion de Archvos") = 7
+		RETURN
+	ENDIF
+ELSE
+WAIT WINDOW "Indexado LetCanDet " NOWAIT
+PACK
+INDEX ON NroSec 					 TAG NroSec
+INDEX ON TipDoc+STR(NroSecDoc,10)    TAG NroSecDoc
+INDEX ON STR(nrosec,10)+indmov		 TAG IndMov
+USE
+ENDIF
+*-
+IF !FILE_USE("LetOpeDoc","E")
+	IF MESSAGEBOX("Continuar Con el Proceso",4+32,"Reorganizacion de Archvos") = 7
+		RETURN
+	ENDIF
+ELSE
+WAIT WINDOW "Indexado LetOpeDoc" NOWAIT
+PACK
+INDEX ON TipOpe+TipDoc  TAG TipDoc
+USE
+ENDIF
+*-
+IF !FILE_USE("LetTipUbi","E")
+	IF MESSAGEBOX("Continuar Con el Proceso",4+32,"Reorganizacion de Archvos") = 7
+		RETURN
+	ENDIF
+ELSE
+WAIT WINDOW "Indexado LetTipUbi" NOWAIT
+PACK
+INDEX ON TipUbi  TAG TipUbi
+INDEX ON DesUbi  TAG DesUbi
+USE
+ENDIF
+*-
+IF !FILE_USE("LetTipVal","E")
+	IF MESSAGEBOX("Continuar Con el Proceso",4+32,"Reorganizacion de Archvos") = 7
+		RETURN
+	ENDIF
+ELSE
+WAIT WINDOW "Indexado LetTipVal" NOWAIT
+PACK
+INDEX ON TipVal  TAG TipVal
+INDEX ON DesVal  TAG DesVal
+USE
+ENDIF
+*-
+*-
+*--------------------------
+*- LIQUIDACIONES
+*--------------------------
+*-
+IF !FILE_USE("LiqDet","E")
+	IF MESSAGEBOX("Continuar Con el Proceso",4+32,"Reorganizacion de Archvos") = 7
+		RETURN
+	ENDIF
+ELSE
+WAIT WINDOW "Indexado LiqDet " NOWAIT
+PACK
+INDEX ON NroSec 					 TAG NroSec
+INDEX ON TipAux+CodAux+TipDoc+NroDoc TAG NroDoc
+INDEX ON TipDoc+STR(NroSecDoc,10)    TAG NroSecDoc
+INDEX ON NroOpe 					 TAG NroOpe
+USE
+ENDIF
+*-
+IF !FILE_USE("LiqPer","E")
+	IF MESSAGEBOX("Continuar Con el Proceso",4+32,"Reorganizacion de Archvos") = 7
+		RETURN
+	ENDIF
+ELSE
+WAIT WINDOW "Indexado LiqPer" NOWAIT
+PACK
+INDEX ON Periodo TAG Periodo
+USE
+ENDIF
+*-
+*--------------------------
+* OPERACION
+*---------------------------
+IF !FILE_USE("MovOpe","E")
+	IF MESSAGEBOX("Continuar Con el Proceso",4+32,"Reorganizacion de Archvos") = 7
+		RETURN
+	ENDIF
+ELSE
+WAIT WINDOW "Indexado MovOpe " NOWAIT
+PACK
+ALTER TABLE MovOpe DROP PRIMARY KEY
+ALTER TABLE MovOpe ADD  PRIMARY KEY NroSec TAG NroSec 
+INDEX ON NroOpe TAG NroOpe
+INDEX ON FecOpe TAG FecOpe
+USE
+ENDIF
+*-
+*--------------------------
+*- PRODUCCION
+*--------------------------
+*-
+*--------------------------
+* RECIBOS
+*---------------------------
+IF !FILE_USE("RcbCab","E")
+	IF MESSAGEBOX("Continuar Con el Proceso",4+32,"Reorganizacion de Archvos") = 7
+		RETURN
+	ENDIF
+ELSE
+WAIT WINDOW "Indexado RcbCab " NOWAIT
+DELETE FROM RcbCab WHERE NROSEC = 0 OR EMPTY(NroSec) OR ISNULL(NROSEC)
+PACK
+ALTER TABLE RcbCab DROP PRIMARY KEY
+ALTER TABLE RcbCab ADD  PRIMARY KEY NroSec TAG NroSec 
+INDEX ON NroOpe                       TAG NroOpe
+INDEX ON TipOpe+TipDoc+NroDoc  		  TAG NroDoc
+INDEX ON TipAux+CodAux+TipDoc+NroDoc  TAG CodAux
+INDEX ON IndSit                       TAG IndSit
+INDEX ON FecDoc                       TAG FecDoc
+USE
+ENDIF
+*-
+IF !FILE_USE("RcbDet","E")
+	IF MESSAGEBOX("Continuar Con el Proceso",4+32,"Reorganizacion de Archvos") = 7
+		RETURN
+	ENDIF
+ELSE
+WAIT WINDOW "Indexado RcbDet " NOWAIT
+PACK
+INDEX ON NroSec TAG NroSec
+USE
+ENDIF
+*-
+*--------------------------
+* REFERENCIAS
+*---------------------------
+*-
+IF !FILE_USE("RefCab","E")
+	IF MESSAGEBOX("Continuar Con el Proceso",4+32,"Reorganizacion de Archvos") = 7
+		RETURN
+	ENDIF
+ELSE
+WAIT WINDOW "Indexado RefCab " NOWAIT
+PACK
+INDEX ON TipDoc+STR(SecDoc,10) TAG SecDoc
+INDEX ON TipRef+STR(SecRef,10) TAG SecRef
+INDEX ON TipDoc+NroDoc TAG NroDoc
+INDEX ON TipRef+NroRef TAG NroRef
+USE
+ENDIF
+*-
+*------------------------------------------------
+*- TABLAS
+*-------------------------------------------------
+*-
+IF !FILE_USE("TabAux","E")
+	IF MESSAGEBOX("Continuar Con el Proceso",4+32,"Reorganizacion de Archvos") = 7
+		RETURN
+	ENDIF
+ELSE
+WAIT WINDOW "Indexado TabAux" NOWAIT
+PACK
+INDEX ON TipAux+CodAux TAG CodAux
+INDEX ON TipAux+NomAux TAG NomAux
+INDEX ON TipAux+NroRuc TAG NroRuc
+INDEX ON codauxvdd+tipaux+nomaux TAG CODVDD
+USE
+ENDIF
+*-
+IF !FILE_USE("TabCto","E")
+	IF MESSAGEBOX("Continuar Con el Proceso",4+32,"Reorganizacion de Archvos") = 7
+		RETURN
+	ENDIF
+ELSE
+WAIT WINDOW "Indexado TabCto" NOWAIT
+PACK
+INDEX ON TipCto        TAG TipCto
+INDEX ON TipCto+CodCto TAG CodCto
+INDEX ON TipCto+DesCto TAG DesCto
+USE
+ENDIF
+*-
+IF !FILE_USE("TabOpeDoc","E")
+	IF MESSAGEBOX("Continuar Con el Proceso",4+32,"Reorganizacion de Archvos") = 7
+		RETURN
+	ENDIF
+ELSE
+WAIT WINDOW "Indexado TabOpeDoc" NOWAIT
+PACK
+INDEX ON TipOpe+TipDoc  TAG TipDoc
+USE
+ENDIF
+*-
+IF !FILE_USE("TabOpePer","E")
+	IF MESSAGEBOX("Continuar Con el Proceso",4+32,"Reorganizacion de Archvos") = 7
+		RETURN
+	ENDIF
+ELSE
+WAIT WINDOW "Indexado TabOpePer" NOWAIT
+PACK
+INDEX ON TipOpe+Periodo TAG Periodo
+USE
+ENDIF
+*-
+IF !FILE_USE("TabSecCom","E")
+	IF MESSAGEBOX("Continuar Con el Proceso",4+32,"Reorganizacion de Archvos") = 7
+		RETURN
+	ENDIF
+ELSE
+WAIT WINDOW "Indexado TabSecCom" NOWAIT
+PACK
+INDEX ON TipCom+Periodo TAG TipCom
+INDEX ON Periodo+TipCom TAG Periodo
+USE
+ENDIF
+*-
+IF !FILE_USE("TabSecDoc","E")
+	IF MESSAGEBOX("Continuar Con el Proceso",4+32,"Reorganizacion de Archvos") = 7
+		RETURN
+	ENDIF
+ELSE
+WAIT WINDOW "Indexado TabSecDoc" NOWAIT
+PACK
+INDEX ON TipDoc+NroSer TAG TipDoc
+USE
+ENDIF
+*-
+IF !FILE_USE("TabTab","E")
+	IF MESSAGEBOX("Continuar Con el Proceso",4+32,"Reorganizacion de Archvos") = 7
+		RETURN
+	ENDIF
+ELSE
+WAIT WINDOW "Indexado Secuencias " NOWAIT
+PACK
+*ALTER TABLE TabTab DROP PRIMARY KEY
+*ALTER TABLE TabTab ADD  PRIMARY KEY TipTab+CodTab TAG TipTab
+INDEX ON TipTab+CodTab TAG TipTab
+USE
+ENDIF
+*-
+IF !FILE_USE("TabUsuVdd","E")
+	IF MESSAGEBOX("Continuar Con el Proceso",4+32,"Reorganizacion de Archvos") = 7
+		RETURN
+	ENDIF
+ELSE
+WAIT WINDOW "Indexado TabAuxVdd" NOWAIT
+PACK
+INDEX ON codusu TAG codusu
+USE
+ENDIF
+*-
+IF !FILE_USE("TabTld","E")
+	IF MESSAGEBOX("Continuar Con el Proceso",4+32,"Reorganizacion de Archvos") = 7
+		RETURN
+	ENDIF
+ELSE
+WAIT WINDOW "Indexado TabTld" NOWAIT
+PACK
+INDEX ON mottld TAG mottld
+INDEX ON DesTld TAG DesTld
+USE
+ENDIF
+*-
+IF !FILE_USE("TipCto","E")
+	IF MESSAGEBOX("Continuar Con el Proceso",4+32,"Reorganizacion de Archvos") = 7
+		RETURN
+	ENDIF
+ELSE
+WAIT WINDOW "Indexado TipCto" NOWAIT
+PACK
+INDEX ON TipCto TAG TipCto
+INDEX ON DesTip TAG DesTip
+USE
+ENDIF
+*-
+IF !FILE_USE("TipPgo","E")
+	IF MESSAGEBOX("Continuar Con el Proceso",4+32,"Reorganizacion de Archvos") = 7
+		RETURN
+	ENDIF
+ELSE
+WAIT WINDOW "Indexado TipPgo" NOWAIT
+PACK
+INDEX ON TipPgo    TAG TipPgo
+INDEX ON DesTipPgo TAG DesTipPgo
+USE
+ENDIF
+*-
+IF !FILE_USE("TipVta","E")
+	IF MESSAGEBOX("Continuar Con el Proceso",4+32,"Reorganizacion de Archvos") = 7
+		RETURN
+	ENDIF
+ELSE
+WAIT WINDOW "Indexado TipVta" NOWAIT
+PACK
+INDEX ON TipVta TAG TipVta
+INDEX ON DesVta TAG DesVta
+USE
+ENDIF
+*-
+*--------------------------
+*- COMPROBANTE DE RETENCION
+*--------------------------
+*-
+IF !FILE_USE("RetCab","E")
+	IF MESSAGEBOX("Continuar Con el Proceso",4+32,"Reorganizacion de Archvos") = 7
+		RETURN
+	ENDIF
+ELSE
+WAIT WINDOW "Indexado RetCab" NOWAIT
+DELETE FROM RetCab WHERE NROSEC = 0 OR EMPTY(NroSec) OR ISNULL(NROSEC)
+PACK
+ALTER TABLE RetCab DROP PRIMARY KEY
+ALTER TABLE RetCab ADD  PRIMARY KEY NroSec TAG NroSec 
+INDEX ON TipDoc+NroDoc                TAG NroDoc
+INDEX ON TipAux+CodAux+TipDoc+NroDoc  TAG CodAux
+INDEX ON Periodo+TipCom+STR(NroCom,6) TAG NroCom
+USE
+ENDIF
+*-
+IF !FILE_USE("RetDet","E")
+	IF MESSAGEBOX("Continuar Con el Proceso",4+32,"Reorganizacion de Archvos") = 7
+		RETURN
+	ENDIF
+ELSE
+WAIT WINDOW "Indexado RetDet" NOWAIT
+PACK
+INDEX ON NroSec TAG NroSec
+INDEX ON tipaux+codaux+tipref+nroref TAG NroDoc
+*INDEX ON TipRef+STR(NroSecRef,10)    TAG NroSecDoc
+USE
+ENDIF
+*-
+*-
+*--------------------------
+*- CONTABILIDAD
+*--------------------------
+*-
+IF !FILE_USE("Cuentas","E")
+	RETURN
+ENDIF
+WAIT WINDOW "Indexado Cuentas " NOWAIT
+PACK
+INDEX ON CodCta TAG CodCta
+INDEX ON DesCta TAG DesCta
+INDEX ON STR(IndNiv,1)+CodCta TAG IndNiv
+USE
+*-
+IF !FILE_USE("TabAut","E")
+	RETURN
+ENDIF
+WAIT WINDOW "Indexado Amarres " NOWAIT
+PACK
+INDEX ON CodCta TAG CodCta
+INDEX ON CodCta+TipAut TAG TipAut
+USE
+*-
+IF !FILE_USE("TabCenCos","E")
+	RETURN
+ENDIF
+WAIT WINDOW "Indexado Centro de Costos " NOWAIT
+PACK
+INDEX ON CodCenCos TAG CodCenCos
+INDEX ON DesCenCos TAG DesCenCos
+USE
+*-
+*------------------------------------
+*- COMUNES
+*-----------------------------------
+*-
+IF !FILE_USE("Accesos","E")
+	IF MESSAGEBOX("Continuar Con el Proceso",4+32,"Reorganizacion de Archvos") = 7
+		RETURN
+	ENDIF
+ELSE
+WAIT WINDOW "Indexado Accesos" NOWAIT
+PACK
+INDEX ON CodUsu+CodApl+CodEmp+CodPrg TAG CodUsu
+USE
+ENDIF
+*-
+IF !FILE_USE("Cambio","E")
+	IF MESSAGEBOX("Continuar Con el Proceso",4+32,"Reorganizacion de Archvos") = 7
+		RETURN
+	ENDIF
+ELSE
+WAIT WINDOW "Indexado Cambio" NOWAIT
+PACK
+INDEX ON FecCam TAG FecCam
+INDEX ON TipMnd+DTOS(FecCam) TAG TipMnd
+USE
+ENDIF
+*-
+IF !FILE_USE("Empresas","E")
+	IF MESSAGEBOX("Continuar Con el Proceso",4+32,"Reorganizacion de Archvos") = 7
+		RETURN
+	ENDIF
+ELSE
+WAIT WINDOW "Indexado Empresas" NOWAIT
+PACK
+INDEX ON CodEmp TAG CodEmp
+INDEX ON NomEmp TAG NomEmp
+USE
+ENDIF
+*-
+IF !FILE_USE("IndSitDoc","E")
+	IF MESSAGEBOX("Continuar Con el Proceso",4+32,"Reorganizacion de Archvos") = 7
+		RETURN
+	ENDIF
+ELSE
+WAIT WINDOW "Indexado IndSitDoc" NOWAIT
+PACK
+INDEX ON IndSit TAG IndSit
+INDEX ON DesSit TAG DesSit
+USE
+ENDIF
+*-
+IF !FILE_USE("Meses","E")
+	IF MESSAGEBOX("Continuar Con el Proceso",4+32,"Reorganizacion de Archvos") = 7
+		RETURN
+	ENDIF
+ELSE
+WAIT WINDOW "Indexado Meses" NOWAIT
+PACK
+INDEX ON CodMes TAG CodMes
+INDEX ON NomMes TAG NomMes
+USE
+ENDIF
+*-
+IF !FILE_USE("TabBco","E")
+	IF MESSAGEBOX("Continuar Con el Proceso",4+32,"Reorganizacion de Archvos") = 7
+		RETURN
+	ENDIF
+ELSE
+WAIT WINDOW "Indexado TabBco" NOWAIT
+PACK
+INDEX ON CodBco TAG CodBco
+INDEX ON Desbco TAG DesBco
+USE
+ENDIF
+*-
+IF !FILE_USE("TabCdd","E")
+	IF MESSAGEBOX("Continuar Con el Proceso",4+32,"Reorganizacion de Archvos") = 7
+		RETURN
+	ENDIF
+ELSE
+WAIT WINDOW "Indexado Ciudades" NOWAIT
+PACK
+INDEX ON CodPais+DesCdd TAG DesCdd
+INDEX ON CodPais+CodCdd TAG CodCdd
+USE
+ENDIF
+*-
+IF !FILE_USE("TabDtt","E")
+	IF MESSAGEBOX("Continuar Con el Proceso",4+32,"Reorganizacion de Archvos") = 7
+		RETURN
+	ENDIF
+ELSE
+WAIT WINDOW "Indexado Distritos " NOWAIT
+PACK
+INDEX ON CodPais+CodCdd+DesPos    TAG DesPos
+INDEX ON CodPais+CodCdd+CodPostal TAG CodPostal
+USE
+ENDIF
+*-
+IF !FILE_USE("TabIndCam","E")
+	IF MESSAGEBOX("Continuar Con el Proceso",4+32,"Reorganizacion de Archvos") = 7
+		RETURN
+	ENDIF
+ELSE
+WAIT WINDOW "Indexado TabIndCam" NOWAIT
+PACK
+INDEX ON IndCam TAG IndCam
+INDEX ON DesCam TAG DesCam
+USE
+ENDIF
+*-
+IF !FILE_USE("TabMnd","E")
+	IF MESSAGEBOX("Continuar Con el Proceso",4+32,"Reorganizacion de Archvos") = 7
+		RETURN
+	ENDIF
+ELSE
+WAIT WINDOW "Indexado TabMnd" NOWAIT
+PACK
+INDEX ON CodMnd TAG CodMnd
+INDEX ON DesMnd TAG DesMnd
+USE
+ENDIF
+*-
+IF !FILE_USE("TabUsu","E")
+	IF MESSAGEBOX("Continuar Con el Proceso",4+32,"Reorganizacion de Archvos") = 7
+		RETURN
+	ENDIF
+ELSE
+WAIT WINDOW "Indexado Usuarios " NOWAIT
+DELETE FROM TabUsu WHERE EMPTY(CodUsu) OR ISNULL(CodUsu)
+PACK
+ALTER TABLE TabUsu DROP PRIMARY KEY
+ALTER TABLE TabUsu ADD  PRIMARY KEY CodUsu TAG CodUsu
+INDEX ON NomUsu TAG NomUsu
+USE
+ENDIF
+*-
+IF !FILE_USE("TipAux","E")
+	IF MESSAGEBOX("Continuar Con el Proceso",4+32,"Reorganizacion de Archvos") = 7
+		RETURN
+	ENDIF
+ELSE
+WAIT WINDOW "Indexado TipAux" NOWAIT
+PACK
+INDEX ON TipAux TAG TipAux
+INDEX ON DesAux TAG DesAux
+USE
+ENDIF
+*-
+IF !FILE_USE("TipCom","E")
+	IF MESSAGEBOX("Continuar Con el Proceso",4+32,"Reorganizacion de Archvos") = 7
+		RETURN
+	ENDIF
+ELSE
+WAIT WINDOW "Indexado TipCom" NOWAIT
+PACK
+INDEX ON TipCom TAG TipCom
+INDEX ON DesCom TAG DesCom
+USE
+ENDIF
+*-
+IF !FILE_USE("TipDoc","E")
+	IF MESSAGEBOX("Continuar Con el Proceso",4+32,"Reorganizacion de Archvos") = 7
+		RETURN
+	ENDIF
+ELSE
+WAIT WINDOW "Indexado TipDoc" NOWAIT
+PACK
+INDEX ON TipDoc TAG TipDoc
+INDEX ON DesDoc TAG DesDoc
+USE
+ENDIF
+*-
+IF !FILE_USE("TipMnd","E")
+	IF MESSAGEBOX("Continuar Con el Proceso",4+32,"Reorganizacion de Archvos") = 7
+		RETURN
+	ENDIF
+ELSE
+WAIT WINDOW "Indexado TipMnd" NOWAIT
+PACK
+INDEX ON TipMnd TAG TipMnd
+INDEX ON DesMnd TAG DesMnd
+USE
+ENDIF
+*-
+IF !FILE_USE("TipMovArt","E")
+	IF MESSAGEBOX("Continuar Con el Proceso",4+32,"Reorganizacion de Archvos") = 7
+		RETURN
+	ENDIF
+ELSE
+WAIT WINDOW "Indexado TipMovArt" NOWAIT
+PACK
+INDEX ON TipMov TAG TipMov
+INDEX ON DesMov TAG DesMov
+USE
+ENDIF
+*-
+IF !FILE_USE("TipOpe","E")
+	IF MESSAGEBOX("Continuar Con el Proceso",4+32,"Reorganizacion de Archvos") = 7
+		RETURN
+	ENDIF
+ELSE
+WAIT WINDOW "Indexado TipOpe" NOWAIT
+PACK
+INDEX ON TipOpe TAG TipOpe
+INDEX ON DesOpe TAG DesOpe
+USE
+ENDIF
+*-
+IF !FILE_USE("TipOpeBco","E")
+	IF MESSAGEBOX("Continuar Con el Proceso",4+32,"Reorganizacion de Archvos") = 7
+		RETURN
+	ENDIF
+ELSE
+WAIT WINDOW "Indexado TipOpeBco" NOWAIT
+PACK
+INDEX ON TipOpe TAG TipOpe
+INDEX ON DesOpe TAG DesOpe
+USE
+ENDIF
+*-
+*-
+IF !FILE_USE("Accesos","E")
+	IF MESSAGEBOX("Continuar Con el Proceso",4+32,"Reorganizacion de Archvos") = 7
+		RETURN
+	ENDIF
+ELSE
+WAIT WINDOW "Indexado Accesos" NOWAIT
+PACK
+INDEX ON codusu+codapl+codemp+codprg TAG CodUsu
+USE
+ENDIF
+*-
+*-
+IF !FILE_USE("TabOpc","E")
+	IF MESSAGEBOX("Continuar Con el Proceso",4+32,"Reorganizacion de Archvos") = 7
+		RETURN
+	ENDIF
+ELSE
+WAIT WINDOW "Indexado TabOpc" NOWAIT
+PACK
+INDEX ON CodApl+CodMnu TAG CodMnu
+INDEX ON CodApl+CodOpc TAG CodOpc
+INDEX ON CodApl+DesOpc TAG DesOpc
+USE
+ENDIF
+*-
+*-
+IF !FILE_USE("TabAcc","E")
+	IF MESSAGEBOX("Continuar Con el Proceso",4+32,"Reorganizacion de Archvos") = 7
+		RETURN
+	ENDIF
+ELSE
+WAIT WINDOW "Indexado TabAcc" NOWAIT
+PACK
+INDEX ON CodUsu+CodApl+CodOpc TAG CodOpc
+USE
+ENDIF
+*-
+*-
+CLOSE TABLES
+MESSAGEBOX('Proceso de Reorganizacion de Archivos Termino Correctamente',0+64,"Utilidades")
+RETURN

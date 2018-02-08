@@ -1,0 +1,60 @@
+*         1         2         3         4         5         6         7         8         9         0         1         2         3
+*123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012
+*Codigo      Descripcion                                        UND        STOCK      Minimo      Pedido
+*1234567890  12345678901234567890123456789012345678901234567890 123   123,456.12  123,456.12  123,123.12
+
+PUBLIC lnPag, R
+LOCAL lcFile, lcProceso
+lcFile = "Reposicion"
+lcProceso = "Rep_AlmRep()"
+lnPag = 0
+R = 0
+Imprimetexto(lcFile,lcProceso)
+RETURN
+
+PROCEDURE REP_AlmRep
+*-
+@0,0 SAY CHR(18)+CHR(15)
+*-
+TIT_AlmRep()
+SELE TmpRep
+GO TOP 
+DO WHILE !EOF()
+	R = R + 1
+	IF R > 55
+		TIT_AlmRep()
+		R = R + 1
+	ENDIF
+	@R,001 SAY PADR(CodArt,10)
+	@R,013 SAY PADR(DesArt,50)
+	@R,064 SAY PADR(CodUnd,03)
+	@R,070 SAY CanArt PICTURE "999,999.99"
+	@R,082 SAY CanMin PICTURE "999,999.99"
+	@R,094 SAY (CanMin - CanArt) PICTURE "999,999.99"
+	SKIP
+ENDDO
+RETURN
+
+PROCEDURE TIT_AlmRep()
+LOCAL lnColumna,lnOldSele
+lnOldSele = SELECT()
+lnPag =lnPag + 1
+IF lnPag > 1
+	@00,00 SAY ""
+ENDIF
+@01,001 SAY PADR(TabPar.NomEmp,40)
+@01,120 SAY DATE()
+@02,042 SAY PADC(pTitulo,76)
+@02,120 SAY PADR(ALLTRIM(TTOC(DATETIME(),2)),10)
+@03,042 SAY PADC(pTitulo1,76)
+@03,120 SAY lnPag PICTURE "@B 9999"
+@04,001 SAY REPLICATE("-",130)
+@05,001 SAY "Codigo"
+@05,013 SAY "Descripcion"
+@05,064 SAY "UND"
+@05,070 SAY PADL("STOCK",10)
+@05,082 SAY PADL("MINIMO",10)
+@05,094 SAY PADL("REPOSICION",10)
+@06,001 SAY REPLICATE("-",130)
+R=7
+RETURN

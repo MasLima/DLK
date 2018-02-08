@@ -1,0 +1,154 @@
+*       *********************************************************
+*       *                                                         
+*       * 29/08/2001             MENU.MPR               17:55:06  
+*       *                                                         
+*       *********************************************************
+*       *                                                         
+*       * Nombre del autor                                        
+*       *                                                         
+*       * Copyright (C) 2001 Nombre de compañía                   
+*       * Dirección                                               
+*       * Ciudad,     Código pos                                  
+*       * País                                              
+*       *                                                         
+*       * Descripción:                                            
+*       * Este PROGRAMA lo ha generado automáticamente GENMENU.    
+*       *                                                         
+*       *********************************************************
+
+
+*       *********************************************************
+*       *                                                         
+*       *                    Definición de menú                   
+*       *                                                         
+*       *********************************************************
+*
+
+SET SYSMENU TO
+SET SYSMENU AUTOMATIC
+
+DEFINE PAD _msm_file OF _MSYSMENU PROMPT "\<Archivo" COLOR SCHEME 3 ;
+	NEGOTIATE LEFT ;
+	KEY ALT+A, "" ;
+	MESSAGE "Crea, abre, guarda o imprime archivos, o sale de Visual FoxPro"
+DEFINE PAD _0gw12el8f OF _MSYSMENU PROMPT "\<Movimientos" COLOR SCHEME 3 ;
+	KEY ALT+M, ""
+DEFINE PAD _0gw12el8g OF _MSYSMENU PROMPT "\<Reportes\Consultas" COLOR SCHEME 3 ;
+	KEY ALT+R, ""
+DEFINE PAD _0gw12el8h OF _MSYSMENU PROMPT "\<Mantenimiento" COLOR SCHEME 3 ;
+	KEY ALT+M, ""
+DEFINE PAD _0gw12el8i OF _MSYSMENU PROMPT "\<Procesos" COLOR SCHEME 3 ;
+	KEY ALT+P, ""
+DEFINE PAD _0gw12el8j OF _MSYSMENU PROMPT "\<Utilitarios" COLOR SCHEME 3 ;
+	KEY ALT+U, ""
+DEFINE PAD _msm_windo OF _MSYSMENU PROMPT "\<Ventana" COLOR SCHEME 3 ;
+	NEGOTIATE RIGHT ;
+	KEY ALT+V, "" ;
+	MESSAGE "Manipula ventanas, y muestra las ventanas Comandos y Sesión de datos"
+DEFINE PAD _msm_systm OF _MSYSMENU PROMPT "Ay\<uda" COLOR SCHEME 3 ;
+	KEY ALT+U, "" ;
+	MESSAGE "Muestra Ayuda acerca de Visual FoxPro"
+ON PAD _msm_file OF _MSYSMENU ACTIVATE POPUP _mfile
+ON PAD _0gw12el8f OF _MSYSMENU ACTIVATE POPUP movimiento
+ON PAD _0gw12el8g OF _MSYSMENU ACTIVATE POPUP reportesco
+ON PAD _0gw12el8h OF _MSYSMENU ACTIVATE POPUP mantenimie
+ON PAD _0gw12el8i OF _MSYSMENU ACTIVATE POPUP procesos
+ON PAD _0gw12el8j OF _MSYSMENU ACTIVATE POPUP utilitario
+ON PAD _msm_windo OF _MSYSMENU ACTIVATE POPUP _mwindow
+ON PAD _msm_systm OF _MSYSMENU ACTIVATE POPUP _msystem
+
+DEFINE POPUP _mfile MARGIN RELATIVE SHADOW COLOR SCHEME 4
+DEFINE BAR 1 OF _mfile PROMPT "\<Cerrar"
+DEFINE BAR 2 OF _mfile PROMPT "\-"
+DEFINE BAR 3 OF _mfile PROMPT "\<Salir" ;
+	MESSAGE "Sale de la Aplicacion"
+ON SELECTION BAR 1 OF _mfile goApp.ReleaseForm
+ON SELECTION BAR 3 OF _mfile goApp.Release
+
+DEFINE POPUP movimiento MARGIN RELATIVE SHADOW COLOR SCHEME 4
+DEFINE BAR 1 OF movimiento PROMPT "Operaciones"
+DEFINE BAR 2 OF movimiento PROMPT "Orden de Compra del Cliente"
+DEFINE BAR 3 OF movimiento PROMPT "Orden de Compra al Proveedor"
+DEFINE BAR 4 OF movimiento PROMPT "Ventas"
+DEFINE BAR 5 OF movimiento PROMPT "Compras"
+DEFINE BAR 6 OF movimiento PROMPT "Bancos"
+DEFINE BAR 7 OF movimiento PROMPT "Recibos"
+DEFINE BAR 8 OF movimiento PROMPT "Liquidaciones"
+ON SELECTION BAR 1 OF movimiento Do form frmMovOpe
+ON BAR 4 OF movimiento ACTIVATE POPUP ventas
+ON SELECTION BAR 5 OF movimiento Do form frmMovDoc
+ON SELECTION BAR 6 OF movimiento Do form frmMovBco
+ON BAR 7 OF movimiento ACTIVATE POPUP recibos
+ON SELECTION BAR 8 OF movimiento Do form frmMovLiq
+
+DEFINE POPUP ventas MARGIN RELATIVE SHADOW COLOR SCHEME 4
+DEFINE BAR 1 OF ventas PROMPT "Guias de Remision"
+DEFINE BAR 2 OF ventas PROMPT "Facturas"
+DEFINE BAR 3 OF ventas PROMPT "Notas de Credito"
+ON SELECTION BAR 1 OF ventas Do form frmMovGuia
+ON SELECTION BAR 2 OF ventas Do form frmMovFac
+
+DEFINE POPUP recibos MARGIN RELATIVE SHADOW COLOR SCHEME 4
+DEFINE BAR 1 OF recibos PROMPT "Ingresos"
+DEFINE BAR 2 OF recibos PROMPT "Egresos"
+ON SELECTION BAR 1 OF recibos Do form frmMovRcb WITH "1","RI"
+ON SELECTION BAR 2 OF recibos Do form frmMovRcb WITH "2","RE"
+
+DEFINE POPUP reportesco MARGIN RELATIVE SHADOW COLOR SCHEME 4
+DEFINE BAR 1 OF reportesco PROMPT "Posicion de Bancos"
+DEFINE BAR 2 OF reportesco PROMPT "Movimiento de Bancos"
+DEFINE BAR 3 OF reportesco PROMPT "Documentos por Situacion"
+DEFINE BAR 4 OF reportesco PROMPT "Resultados"
+ON SELECTION BAR 1 OF reportesco Do form frmRepPosBco
+ON SELECTION BAR 2 OF reportesco Do form frmRepMovBco
+ON SELECTION BAR 3 OF reportesco Do form frmRepCtacTe
+ON SELECTION BAR 4 OF reportesco Do form frmRepSit
+
+DEFINE POPUP mantenimie MARGIN RELATIVE SHADOW COLOR SCHEME 4
+DEFINE BAR 1 OF mantenimie PROMPT "Auxiliares"
+DEFINE BAR 2 OF mantenimie PROMPT "Conceptos"
+DEFINE BAR 3 OF mantenimie PROMPT "Tipo de Cambio"
+DEFINE BAR 4 OF mantenimie PROMPT "Parametros"
+ON SELECTION BAR 1 OF mantenimie Do form \ApliVf\ApliCon\Forms\frmMntAux
+ON SELECTION BAR 2 OF mantenimie Do form frmMntCto
+ON SELECTION BAR 3 OF mantenimie Do form \ApliVf\ApliCon\Forms\frmMntCam
+ON BAR 4 OF mantenimie ACTIVATE POPUP parametros
+
+DEFINE POPUP parametros MARGIN RELATIVE SHADOW COLOR SCHEME 4
+DEFINE BAR 1 OF parametros PROMPT "Parametros Generales"
+DEFINE BAR 2 OF parametros PROMPT "Tipos de Documentos"
+DEFINE BAR 3 OF parametros PROMPT "Secuencia de Documentos"
+DEFINE BAR 4 OF parametros PROMPT "Tipos de Auxiliares"
+DEFINE BAR 5 OF parametros PROMPT "Bancos"
+DEFINE BAR 6 OF parametros PROMPT "Cuentas Bancarias"
+DEFINE BAR 7 OF parametros PROMPT "Distritos"
+DEFINE BAR 8 OF parametros PROMPT "Tipos de Documentos por Movimiento de Compras"
+DEFINE BAR 9 OF parametros PROMPT "Tipos de Documentos por Movimiento de Bancos"
+ON SELECTION BAR 1 OF parametros Do form frmParGen
+ON SELECTION BAR 2 OF parametros Do form \ApliVf\ApliCon\Forms\frmMntDoc
+ON SELECTION BAR 3 OF parametros Do form frmMntDocSec
+ON SELECTION BAR 4 OF parametros Do form \ApliVf\ApliCon\Forms\frmMntTipAux
+ON SELECTION BAR 5 OF parametros Do form \ApliVf\Intech\Forms\frmMntBco
+ON SELECTION BAR 6 OF parametros Do form frmMntCtaCte
+ON SELECTION BAR 7 OF parametros Do form \ApliVf\ApliCon\Forms\frmMntDtt
+ON SELECTION BAR 8 OF parametros Do form frmMntOpeDoc
+ON SELECTION BAR 9 OF parametros Do form frmMntOpeDocBco
+
+DEFINE POPUP procesos MARGIN RELATIVE SHADOW COLOR SCHEME 4
+DEFINE BAR 1 OF procesos PROMPT "Recalculo de Saldos de Bancos"
+ON SELECTION BAR 1 OF procesos Do form frmPcsRecSldBco
+
+DEFINE POPUP utilitario MARGIN RELATIVE SHADOW COLOR SCHEME 4
+DEFINE BAR 1 OF utilitario PROMPT "Reorganizar Archivos"
+DEFINE BAR 2 OF utilitario PROMPT "Usuarios del Sistema"
+DEFINE BAR 3 OF utilitario PROMPT "Cambio de Password"
+ON SELECTION BAR 1 OF utilitario Do Indexa
+ON SELECTION BAR 2 OF utilitario Do form \ApliVf\ApliCon\Forms\frmMntUsu
+ON SELECTION BAR 3 OF utilitario Do form \ApliVf\ApliCon\Forms\frmCamPass
+
+DEFINE POPUP _mwindow MARGIN RELATIVE SHADOW COLOR SCHEME 4
+DEFINE BAR _mwi_rotat OF _mwindow PROMPT "\<Recorrer"
+
+DEFINE POPUP _msystem MARGIN RELATIVE SHADOW COLOR SCHEME 4
+DEFINE BAR 1 OF _msystem PROMPT "\<Acerca de..."
+ON SELECTION BAR 1 OF _msystem goApp.DoForm("About.scx")
